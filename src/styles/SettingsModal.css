@@ -1,0 +1,106 @@
+.ModalWrapper {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.Modal {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    width: 61vw;
+    border-radius: 13px;
+    color: black;
+}
+
+.ModalHeader {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.CloseIcon {
+    color: #9c9c9c;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+}
+
+.ModalBody {
+    display: flex;
+    height: 100%;
+}
+
+.SideBar {
+    background-color: #F7F7FA;
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.Profile {
+    padding: 20px;
+}
+
+.ProfileInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ProfileImage {
+    width: 60px;
+    height: 60px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.ProfileName {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.ProfilePoints {
+    color: #888;
+}
+
+.SideBarSetting, .Information {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-weight: 400;
+    color: #A9ABBB;
+}
+
+.SideBarSettingItem button, .InformationItem button {
+    border: 0;
+    background-color: transparent;
+    margin-bottom: 10px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction:column;
+    margin-top: 8%;
+    font-size: 16px;
+    color: #525463;
+}
+
+.SettingsContents {
+    flex: 1;
+    overflow-y: auto;
+}
+
+
+.SideBarSettingItem button:active, .InformationItem button:active {
+    font-weight: 800; /* 클릭된 버튼의 글꼴 두께를 변경 */
+}

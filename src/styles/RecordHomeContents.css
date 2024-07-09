@@ -1,0 +1,13 @@
+.ContentsWrapper{
+    width : 960px;
+    height : 100vh;
+    padding-top : 30px;
+    align-items: flex-start;
+}
+.h1{
+    font-size: 28px;
+    font-weight: 700;
+}
+.Feed {
+    display: ruby;
+}

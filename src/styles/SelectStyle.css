@@ -1,0 +1,22 @@
+.SelectStyleWrapper{
+    display: flex;
+    flex-direction: column ;
+    align-items: center;
+    background-color: white;
+    margin: 30px 0px 30px 0px;
+    width : 100%;
+    border-radius: 5px;
+}
+.DrawingStyle{
+    display: flex;
+}
+.box{
+    background-color: #F7F7FA;
+    width: 180px;
+    height: 232px;
+    margin: 30px 10px 60px 10px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

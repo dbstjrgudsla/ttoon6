@@ -1,0 +1,39 @@
+.modalWrapper {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+}
+.modal{
+    background-color: #ffffff;
+    width: 538px;
+    height: 689px;
+    padding: 15px;
+    border-radius: 13px;
+}
+.SocialLogin{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 5vh;
+}
+.Policy{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #767676;
+    font-weight: 500;
+    margin-top: 2vh;
+}
+.modalContnet{
+    position: relative;
+}
+.closeButton {
+    display: flex;
+    flex-direction: row-reverse;
+}

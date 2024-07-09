@@ -1,0 +1,9 @@
+.FooterContent{
+    height: 250px;
+    position : relative;
+    transform : translateY(0%);
+    display:  flex;
+    align-items: center;
+    background-color: rgb(210, 210, 210, 0.7);
+    justify-content: center;
+}

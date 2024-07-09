@@ -1,0 +1,63 @@
+.HeaderWrapper{
+    display: flex;
+    background-color: black;
+    padding : 10px 20px;
+    justify-content: space-between;
+}
+.HeaderMenu{
+    display: flex;
+    align-items: center;
+}
+.HeaderItem{
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: 20px;
+    font-weight: 500;
+}
+.HeaderLoginButton{
+
+    width: 128px;
+    height: 46px;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    background-color: #ff903f;
+    border-radius: 38px;
+    border: none;
+}
+.HeaderLoginButton:hover {
+    background-color: #d26619; /* 호버 시 배경색 변경 */
+}
+.HeaderSettingsButton{
+    border: 0 ;
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.extra{
+    border: 0;
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+}
+.MainHeaderItem{
+    color: white;
+    display: flex;
+    align-items: center;
+}
+.PlusToon{
+    width: 150px;
+    height: 46px;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    background-color: #ff903f;
+    border-radius: 38px;
+    border: none;
+}
+.PlusToon:hover {
+    background-color: #d26619; /* 호버 시 배경색 변경 */
+}

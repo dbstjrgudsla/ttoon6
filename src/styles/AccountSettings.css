@@ -1,0 +1,50 @@
+.AccountWrapper {
+    margin-left: 30px;
+}
+.ProfileSetting{
+    margin-top : 7%;
+    font-weight: 600;
+    font-size: 18px;
+    color: #2B2D36;
+}
+.AddProfileImage {
+    width: 90px;
+    height: 90px;
+    background-color: #D3D3D3;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    margin-top: 4%;
+}
+.NickName{
+    font-size: 16px;
+    font-weight: 500;
+    color: #84889A;
+
+}
+.InputField{
+    border:none;
+    background-color: #F7F7FA;
+    width: 343px;
+    height: 46px;
+    margin-left: 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+.AccountProfileInfo{
+    margin-top: 45px;
+}
+
+.AccountProfileInfoItem{
+    margin-top: 30px;
+    color: #84889A;
+    font-size: 14px;
+    font-weight: 500;
+}
+.UserName{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.UserEmail{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
