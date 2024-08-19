@@ -1,0 +1,47 @@
+.StoryWrapper{
+display: flex;
+flex-direction: column ;
+align-items: center;
+background-color: white;
+margin: 30px 0px 30px 0px;
+width : 100%;
+border-radius: 19px;
+}
+.TextArea{
+    width: 600px;
+    height: 280px;
+    background-color:#F7F7FA;
+    border: none;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius:5px ;
+    resize: none;
+    outline-color: #FF903F;
+    font-size: 16px;
+    color :#2B2D36;
+}
+textarea::placeholder {
+    color: #A9ABBB; /* placeholder 텍스트 색상 변경 */
+    font-size: 16px; /* placeholder 텍스트 크기 변경 */
+    font-weight: 400;;
+}
+.TopicArea{
+    width: 600px;
+    background-color:#F7F7FA;
+    border: none;
+    margin-top: 30px;
+    padding: 20px;
+    border-radius:5px ;
+    resize: none;
+    outline-color: #FF903F;
+    font-size: 16px;
+    color :#2B2D36;
+}
+TopicArea::placeholder {
+    color: #A9ABBB; /* placeholder 텍스트 색상 변경 */
+    font-size: 16px; /* placeholder 텍스트 크기 변경 */
+    font-weight: 400;;
+}
+.TextWrapper{
+    margin-bottom: 70px;
+}

@@ -1,0 +1,18 @@
+.button{
+    border :none;
+    background-color: white;
+    width: 50px;
+}
+.button svg {
+    width: 50px; /* 원하는 크기로 조정 */
+    height: 50px;
+    color: #828282;
+}
+.CountNum{
+    width: 90px;
+    font-weight: 700;
+    font-size: 35px;
+    display: flex;
+    justify-content: center;
+    margin-left: 10px;
+}

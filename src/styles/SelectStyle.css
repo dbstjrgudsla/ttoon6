@@ -5,10 +5,7 @@
     background-color: white;
     margin: 30px 0px 30px 0px;
     width : 100%;
-    border-radius: 5px;
-}
-.DrawingStyle{
-    display: flex;
+    border-radius: 19px;
 }
 .box{
     background-color: #F7F7FA;
@@ -19,4 +16,31 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.DrawingStyle {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.styleButton {
+    width: 150px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #FFFFFF;
+    border-radius: 8px;
+    background-color: #F7F7FA;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top : 30px; 
+    margin-bottom: 50px;
+}
+
+.styleButton.selected {
+    background-color: #ffebcc; /* 주황색 배경 */
+    border-color: #ffa500; /* 주황색 테두리 */
 }

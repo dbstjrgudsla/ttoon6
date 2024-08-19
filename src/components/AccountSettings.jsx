@@ -1,66 +1,109 @@
-// AccountSettings.jsx
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import apiClient from "./apiClient";
 import "../styles/AccountSettings.css";
-import AddProfileImage from './AddProfileImage';
-import NickNameInput from './NickNameInput';
+import AddProfileImage from "./AddProfileImage";
+import NicknameInput from "./NickNameInput";
 
 const AccountSettings = () => {
   const [profileData, setProfileData] = useState({
-    nickName: '',
-    email: '',
+    nickName: "",
+    email: "",
     imageUrl: null,
     point: 0,
-    provider: ''
+    provider: "",
   });
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (token) {
-          const response = await axios.get('https://ttoon.site/api/profile', {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-          if (response.data.isSuccess) {
-            setProfileData(response.data.data);
-            console.log(response.data);
-          } else {
-            console.error('Error fetching profile data:', response.data.message);
-          }
-        } else {
-          console.log("로그인 토큰이 없습니다. 로그인이 필요합니다.");
-          // 필요에 따라 로그인 페이지로 이동하거나 다른 처리를 수행합니다.
-        }
-      } catch (error) {
-        console.error('Error fetching profile data:', error);
-      }
-    };
+  const [newNickName, setNewNickName] = useState("");
+  const [newProfileImage, setNewProfileImage] = useState(null);
 
+  useEffect(() => {
     fetchProfileData();
   }, []);
 
+  const fetchProfileData = async () => {
+    try {
+      const response = await apiClient.get("/profile");
+      console.log("Fetched Profile Data:", response.data);
+      if (response.data.isSuccess) {
+        setProfileData(response.data.data);
+        setNewNickName(response.data.data.nickName);
+      } else {
+        console.error("Error fetching profile data:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
+
+  const handleUpdateProfile = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      console.error("No access token found");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("nickName", newNickName);
+    if (newProfileImage) {
+      formData.append("file", newProfileImage);
+    }
+
+    try {
+      console.log("Sending PATCH request to /profile with token:", token);
+
+      const response = await apiClient.patch("/profile", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("Profile Update Response:", response.data);
+
+      if (response.data.isSuccess) {
+        console.log("Profile updated successfully");
+        fetchProfileData(); // 프로필 데이터를 다시 가져오기
+      } else {
+        console.error("Error updating profile:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
+  };
+
   return (
-    <div className='AccountWrapper'>
-      <div style={{ fontWeight: '700', fontSize: '20px' }}>계정 설정</div>
+    <div className="AccountWrapper">
+      <div style={{ fontWeight: "700", fontSize: "20px" }}>계정 설정</div>
       <div className="ProfileSetting">
         프로필 설정
-        <div><AddProfileImage /></div>
-        <div className='NickName'>
-         닉네임 <NickNameInput initialNickname={profileData.nickName} />
+        <div>
+          <AddProfileImage
+            imageUrl={profileData.imageUrl}
+            onImageChange={(image) => setNewProfileImage(image)}
+          />
+        </div>
+        <div className="NickName">
+          닉네임
+          <NicknameInput
+            initialNickname={profileData.nickName}
+            onNicknameChange={(nickname) => setNewNickName(nickname)}
+          />
         </div>
       </div>
+      <div className="Line" style={{ marginTop: "10px" }}></div>
       <div className="AccountProfileInfo">
-        <div style={{ fontWeight: '600', fontSize: '18px' }}>계정 정보</div>
-        <div className='AccountProfileInfoItem'>
-          <div className='UserEmail'>이메일 {profileData.email}</div>
-          <div className='SignOut'>탈퇴하기</div>
+        <div style={{ fontWeight: "600", fontSize: "18px" }}>계정 정보</div>
+        <div className="AccountProfileInfoItem">
+          <div className="UserEmail">이메일 {profileData.email}</div>
+          <div className="SignOut" onClick={() => {}}>
+            탈퇴하기
+          </div>
         </div>
       </div>
+      <button className="Apply" onClick={handleUpdateProfile}>
+        수정
+      </button>
     </div>
   );
-}
+};
 
 export default AccountSettings;

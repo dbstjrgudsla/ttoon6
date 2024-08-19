@@ -26,16 +26,15 @@
     background-color: #F7F7FA;
     width: 343px;
     height: 46px;
-    margin-left: 20px;
     font-size: 16px;
     font-weight: 500;
 }
 .AccountProfileInfo{
-    margin-top: 45px;
+    margin-top: 25px;
 }
 
 .AccountProfileInfoItem{
-    margin-top: 30px;
+    margin-top: 15px;
     color: #84889A;
     font-size: 14px;
     font-weight: 500;
@@ -45,6 +44,16 @@
     margin-bottom: 10px;
 }
 .UserEmail{
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 10px;
+}
+.SignOut{
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 500;
+    border-bottom: 1px solid #84889A;
+    width: 56px;
+}
+.Apply{
+    margin-left: 500px;
 }

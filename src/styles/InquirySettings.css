@@ -1,0 +1,28 @@
+.DevEmail {
+    font-size: 16px;
+    font-weight: 400;
+    color: #2B2D36;
+    background-color: #F7F7FA;
+    padding: 13px;
+    width: 470px;
+    border-radius: 7px;
+    margin-top : 19px;
+}
+.Line{
+    border-bottom: 1px solid #cecece;
+    margin-top: 40px;
+    width: 530px;
+}
+.InquiryDetail{
+    width: 490px;
+    background-color:#F7F7FA;
+    border: none;
+    margin-top: 30px;
+    margin-bottom: 70px;
+    height: 220px;
+    border-radius:5px ;
+    resize: none;
+    outline-color: #FF903F;
+    padding-top: 20px;
+    padding-left: 10px;
+}

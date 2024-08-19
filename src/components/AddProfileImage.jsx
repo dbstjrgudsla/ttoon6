@@ -1,17 +1,25 @@
-// ProfilePhotoUpload.js
-import React, { useState } from 'react';
-import '../styles/AddProfileImage.css';
+// AddProfileImage.jsx
+import React, { useState, useEffect } from "react";
+import "../styles/AddProfileImage.css";
 
-const AddProfileImage = () => {
-  const [profileImage, setProfileImage] = useState(null);
+const AddProfileImage = ({ imageUrl, onImageChange }) => {
+  const [profileImage, setProfileImage] = useState(imageUrl);
+
+  useEffect(() => {
+    setProfileImage(imageUrl);
+  }, [imageUrl]);
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
       const reader = new FileReader();
       reader.onload = (e) => {
         setProfileImage(e.target.result);
+        if (onImageChange) {
+          onImageChange(file); // Call the callback with the new file
+        }
       };
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 
@@ -29,7 +37,7 @@ const AddProfileImage = () => {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
           />
           <span className="plus-icon">+</span>
         </label>
