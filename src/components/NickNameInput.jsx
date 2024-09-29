@@ -1,15 +1,14 @@
-// NicknameInput.jsx
 import React, { useState, useEffect } from "react";
 
-const NicknameInput = ({ initialNickname, onNicknameChange }) => {
+const NicknameInput = ({ initialNickname = "", onNicknameChange }) => {
   const [nickname, setNickname] = useState(initialNickname);
   const [charCount, setCharCount] = useState(initialNickname.length);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // initialNickname이 변경될 때 nickname 상태를 업데이트
   useEffect(() => {
-    setNickname(initialNickname);
-    setCharCount(initialNickname.length);
+    setNickname(initialNickname || "");
+    setCharCount((initialNickname || "").length);
   }, [initialNickname]);
 
   // nickname이 변경될 때 charCount 업데이트 및 상위 컴포넌트에 변경 알리기

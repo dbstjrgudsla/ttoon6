@@ -59,7 +59,7 @@ const Header = ({ onSelectTab, currentTab }) => {
             sx={{
               "& .MuiTab-root": {
                 color: "#84889a !important", // 기본 탭 색상
-                fontSize: "24px !important",
+                fontSize: "18px !important",
                 fontWeight: "500 !important",
                 marginLeft: "44px !important",
                 backgroundColor: "transparent !important", // 기본 배경색
@@ -74,8 +74,9 @@ const Header = ({ onSelectTab, currentTab }) => {
               },
             }}
           >
-            <Tab label="내 기록" />
-            <Tab label="출석 체크" />
+            <Tab label="기록" />
+            <Tab label="출석체크" />
+            <Tab label="친구관리" />
           </Tabs>
         </div>
       ) : (

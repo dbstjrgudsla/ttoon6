@@ -1,0 +1,63 @@
+.attendance-container {
+    text-align: center;
+    margin: 20px;
+    height: 100%;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .points {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .attendance-grid {
+    display: flex;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .day-box {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: gray;
+  }
+  
+  .day-box.checked {
+    border-color: orange;
+    color: orange;
+  }
+  
+  .gift-icon {
+    font-size: 30px;
+  }
+  
+  .check-btn {
+    background-color: #FF903F;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    width: 200px;
+    height: 52px;
+    border-radius: 20px;
+    font-size: 20px;
+  }
+  
+  .check-btn:hover {
+    background-color: darkorange;
+  }
+  

@@ -1,0 +1,51 @@
+.calendar-container {
+  width: 80%;
+  margin: auto;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.calendar-day {
+  width: 100%;
+  padding-top: 100%;
+  position: relative;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  text-align: center;
+}
+
+.calendar-day.empty {
+  background-color: transparent;
+  cursor: default;
+}
+
+.calendar-day.has-post img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  object-fit: cover;
+}
+
+.image-viewer {
+  margin-top: 20px;
+  text-align: center;
+}
+.OnlyMine{
+  display: flex;
+  
+}

@@ -6,12 +6,15 @@ import {
   MenuItem,
   Select,
   TextField,
+  Button,
 } from "@mui/material";
+import apiClient from "./apiClient"; // POST 요청을 보내기 위해 필요한 API 클라이언트
 
 const InquirySettings = () => {
   const maxLength = 300; // 최대 입력 가능한 문자 수
   const [story, setStory] = useState(""); // 입력된 이야기를 상태로 관리
   const [category, setCategory] = useState("");
+  const [email, setEmail] = useState(""); // 이메일 상태 관리
   const [error, setError] = useState(false); // 에러 상태를 관리
 
   // 선택값 변경 핸들러 함수
@@ -30,6 +33,43 @@ const InquirySettings = () => {
     setStory(text); // 상태 업데이트
   };
 
+  // 이메일 입력 핸들러 함수
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  // 문의사항 제출 핸들러 함수
+  const handleSubmit = async () => {
+    const accessToken = localStorage.getItem("accessToken"); // 토큰 가져오기
+    if (!accessToken) {
+      console.error("No access token found");
+      return;
+    }
+
+    const requestBody = {
+      receiver: email, // 입력된 이메일
+      category: category, // 선택된 카테고리 (문자열로 변환)
+      body: story, // 입력된 문의 내용
+    };
+
+    try {
+      const response = await apiClient.post("/ask", requestBody, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (response.data.isSuccess) {
+        console.log("Inquiry sent successfully");
+      } else {
+        console.error("Error sending inquiry:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error sending inquiry:", error);
+    }
+  };
+
   return (
     <div className="AccountWrapper">
       <div style={{ fontWeight: "700", fontSize: "20px" }}>문의 하기</div>
@@ -38,7 +78,21 @@ const InquirySettings = () => {
         <div className="h3" style={{ fontSize: "14px" }}>
           문의에 대한 답변을 이메일로 보내드려요
         </div>
-        <div className="DevEmail">ttoon@gmail.com</div>
+        <input
+          className="DevEmail"
+          type="email"
+          value={email}
+          onChange={handleEmailChange}
+          placeholder="이메일을 입력하세요"
+          style={{
+            width: "500px",
+            padding: "10px",
+            marginTop: "10px",
+            fontSize: "16px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+          }}
+        />
         <div className="Line"></div>
       </div>
       <div className="ProfileSetting">문의 하기</div>
@@ -66,11 +120,17 @@ const InquirySettings = () => {
               },
             }}
           >
-            <MenuItem value={1}>서비스 이용이 불편해요</MenuItem>
-            <MenuItem value={2}>원하는 그림이 생성되지 않아요</MenuItem>
-            <MenuItem value={3}>속도가 너무 느려요</MenuItem>
-            <MenuItem value={4}>서비스 이용에 오류가 있어요</MenuItem>
-            <MenuItem value={5}>기타</MenuItem>
+            <MenuItem value={"서비스 이용이 불편해요"}>
+              서비스 이용이 불편해요
+            </MenuItem>
+            <MenuItem value={"원하는 그림이 생성되지 않아요"}>
+              원하는 그림이 생성되지 않아요
+            </MenuItem>
+            <MenuItem value={"속도가 너무 느려요"}>속도가 너무 느려요</MenuItem>
+            <MenuItem value={"서비스 이용에 오류가 있어요"}>
+              서비스 이용에 오류가 있어요
+            </MenuItem>
+            <MenuItem value={"기타"}>기타</MenuItem>
           </Select>
         </FormControl>
       </div>
@@ -92,7 +152,7 @@ const InquirySettings = () => {
         rows={5}
         sx={{
           width: "500px",
-          marginTop: "40px", // 수정: 잘못된 속성명 수정
+          marginTop: "40px",
           "& .MuiFilledInput-root": {
             backgroundColor: "#F7F7FA", // 기본 배경색 설정
             border: "none", // 테두리 제거
@@ -111,6 +171,11 @@ const InquirySettings = () => {
           },
         }}
       />
+      <div className="submitButton">
+        <Button variant="contained" onClick={handleSubmit}>
+          제출
+        </Button>
+      </div>
     </div>
   );
 };

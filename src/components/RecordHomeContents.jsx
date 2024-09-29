@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import FeedBundle from "./FeedBundle";
 import "../styles/RecordHomeContents.css";
 import Calender from "./Calender";
+import { Switch } from "@mui/material"; // MUI에서 Switch 임포트
 
 const HomeContents = () => {
   const [currentTab, setCurrentTab] = useState(0); // 초기값 설정
@@ -39,6 +40,10 @@ const HomeContents = () => {
         <Tab value={0} label="캘린더" />
         <Tab value={1} label="피드" />
       </Tabs>
+      <div className="OnlyMine">
+        <div className="h3">내피드만 보기</div>
+        <Switch defaultChecked color="warning" />
+      </div>
       <div
         className="calender"
         style={{ display: currentTab === 0 ? "" : "none" }}
