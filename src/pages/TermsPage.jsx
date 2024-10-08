@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../styles/TermsPage.css";
 
 const TermsPage = () => {
   const navigate = useNavigate();
@@ -50,22 +51,26 @@ const TermsPage = () => {
   };
 
   return (
-    <div>
-      <h1>약관 동의</h1>
-      <p>약관에 동의하시겠습니까?</p>
+    <div className="Wrapper">
+      <div className="TermContent">
+        <div className="h11">닉네임을 입력해주세요</div>
+        <div className="h33">입력한 닉네임은 친구들에게 표시되어요</div>
 
-      <div>
-        <label htmlFor="nickName">닉네임:</label>
-        <input
-          id="nickName"
-          type="text"
-          value={nickName}
-          onChange={(e) => setNickName(e.target.value)}
-          placeholder="닉네임을 입력하세요"
-        />
+        <div>
+          <input
+            className="floppy"
+            id="nickName"
+            type="text"
+            value={nickName}
+            onChange={(e) => setNickName(e.target.value)}
+            placeholder="닉네임을 입력해주세요(최대10자)"
+          />
+        </div>
+
+        <button className="grep" onClick={handleTermsAgreement}>
+          완료
+        </button>
       </div>
-
-      <button onClick={handleTermsAgreement}>동의</button>
     </div>
   );
 };

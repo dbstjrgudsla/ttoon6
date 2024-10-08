@@ -1,6 +1,8 @@
+// NicknameInput.js
 import React, { useState, useEffect } from "react";
+import "../styles/NickNameInput.css";
 
-const NicknameInput = ({ initialNickname = "", onNicknameChange }) => {
+const NicknameInput = ({ initialNickname = "", onNicknameChange, onSave }) => {
   const [nickname, setNickname] = useState(initialNickname);
   const [charCount, setCharCount] = useState(initialNickname.length);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,18 +34,32 @@ const NicknameInput = ({ initialNickname = "", onNicknameChange }) => {
     setNickname(e.target.value);
   };
 
+  const handleSave = () => {
+    if (onSave) {
+      onSave(); // 부모 컴포넌트의 handleUpdateProfile 호출
+    }
+  };
+
   return (
-    <div>
+    <div className="NicknameInputContainer">
       {isLoggedIn ? (
         <>
-          <input
-            type="text"
-            className="InputField"
-            value={nickname}
-            onChange={handleInputChange}
-            maxLength={20}
-          />
-          <div style={{ fontSize: "12px" }}>{charCount}/20자</div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <input
+              type="text"
+              className="InputField"
+              value={nickname}
+              onChange={handleInputChange}
+              maxLength={14}
+              style={{ marginRight: "8px" }}
+            />
+            <button className="SaveButton" onClick={handleSave}>
+              저장
+            </button>
+          </div>
+          <div style={{ fontSize: "12px", marginTop: "4px" }}>
+            {charCount}/14자
+          </div>
         </>
       ) : (
         <div>로그인이 필요합니다.</div>

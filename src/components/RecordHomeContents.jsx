@@ -6,7 +6,7 @@ import "../styles/RecordHomeContents.css";
 import Calender from "./Calender";
 import { Switch } from "@mui/material"; // MUI에서 Switch 임포트
 
-const HomeContents = () => {
+const HomeContents = ({ nickname }) => {
   const [currentTab, setCurrentTab] = useState(0); // 초기값 설정
 
   const handleTabChange = (event, newValue) => {
@@ -15,7 +15,8 @@ const HomeContents = () => {
 
   return (
     <div className="ContentsWrapper">
-      <div className="h1">님의 기록들 모아보기</div>
+      <div className="h1">{nickname}님의 기록들 모아보기</div>{" "}
+      {/* 닉네임 표시 */}
       <Tabs
         value={currentTab} // 현재 선택된 탭의 인덱스
         onChange={handleTabChange} // 탭 변경 핸들러

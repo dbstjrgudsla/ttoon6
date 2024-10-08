@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import "../styles/Friend.css";
-import { ReactComponent as NoFriend } from "../img/NoFriend.svg";
-import { FaSearch } from "react-icons/fa";
-import { ReactComponent as NoFriendAsked } from "../img/NoFriendAsked.svg";
+import axios from "axios"; // Axios 임포트
+import FriendList from "./FriendList"; // 친구 목록 컴포넌트
+import ReceivedRequests from "./ReceivedRequest"; // 받은 요청 컴포넌트
 
-const Friend = () => {
+const Friend = ({ accessToken }) => {
+  // accessToken을 prop으로 받습니다.
   const [currentTab, setCurrentTab] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
+  const [error, setError] = useState(""); // 오류 메시지 상태
 
   const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
@@ -21,10 +23,34 @@ const Friend = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setSearchTerm(""); // 모달을 닫을 때 검색어 초기화
+    setError(""); // 오류 메시지 초기화
   };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value); // 검색어 업데이트
+  };
+
+  const handleAddFriend = async () => {
+    try {
+      const response = await axios.post(
+        "https://ttoon.site/api/friends",
+        { nickName: searchTerm }, // 요청 본문
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      console.log(response.data); // 성공적으로 추가된 친구의 정보
+      closeModal(); // 모달 닫기
+    } catch (error) {
+      setError(
+        error.response?.data?.message || "친구 추가 요청에 실패했습니다."
+      ); // 오류 메시지 설정
+    }
   };
 
   return (
@@ -59,13 +85,14 @@ const Friend = () => {
           친구 추가하기
         </button>
       </div>
-
       {isModalOpen && (
         <div className="modalOverlay" onClick={closeModal}>
-          <div className="modalContent" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="FriendmodalContent"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h2>닉네임으로 친구를 찾아보세요</h2>
             <div className="search-container">
-              <FaSearch className="search-icon" />
               <input
                 type="text"
                 className="searchInput"
@@ -73,27 +100,16 @@ const Friend = () => {
                 value={searchTerm}
                 onChange={handleSearchChange}
               />
+              <button onClick={handleAddFriend}>친구 추가</button>{" "}
+              {/* 친구 추가 버튼 */}
             </div>
+            {error && <p className="error-message">{error}</p>}{" "}
+            {/* 오류 메시지 표시 */}
           </div>
         </div>
       )}
-
-      <div
-        className="FriendList"
-        style={{ display: currentTab === 0 ? "" : "none" }}
-      >
-        <div className="FriendListWrapper">
-          <NoFriend />
-        </div>
-      </div>
-      <div
-        className="AskFriend"
-        style={{ display: currentTab === 1 ? "" : "none" }}
-      >
-        <div className="FriendListWrapper">
-          <NoFriendAsked />
-        </div>
-      </div>
+      {currentTab === 0 && <FriendList />} {/* 친구 목록 */}
+      {currentTab === 1 && <ReceivedRequests />} {/* 받은 요청 */}
     </div>
   );
 };

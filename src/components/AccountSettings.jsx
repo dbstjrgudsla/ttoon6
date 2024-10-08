@@ -1,3 +1,4 @@
+// AccountSettings.js
 import React, { useState, useEffect } from "react";
 import apiClient from "./apiClient"; // API 클라이언트 임포트
 import "../styles/AccountSettings.css"; // 스타일 시트 임포트
@@ -5,7 +6,7 @@ import AddProfileImage from "./AddProfileImage"; // 프로필 이미지 추가 �
 import NicknameInput from "./NickNameInput"; // 닉네임 입력 컴포넌트
 import { useNavigate } from "react-router-dom"; // 페이지 이동을 위한 훅
 
-const AccountSettings = () => {
+const AccountSettings = ({ onUpdateProfileData }) => {
   const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
   const [profileData, setProfileData] = useState({
     nickName: "",
@@ -20,6 +21,7 @@ const AccountSettings = () => {
 
   useEffect(() => {
     fetchProfileData(); // 컴포넌트가 마운트될 때 프로필 데이터 가져오기
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchProfileData = async () => {
@@ -38,6 +40,7 @@ const AccountSettings = () => {
       if (response.data.isSuccess) {
         setProfileData(response.data.data);
         setNewNickName(response.data.data.nickName); // 닉네임 상태 업데이트
+        onUpdateProfileData(response.data.data); // 부모 컴포넌트로 프로필 데이터 전달
       } else {
         console.error("Error fetching profile data:", response.data.message);
         navigate("/login"); // 인증 실패 시 로그인 페이지로 이동
@@ -139,6 +142,7 @@ const AccountSettings = () => {
           <NicknameInput
             initialNickname={profileData.nickName}
             onNicknameChange={(nickname) => setNewNickName(nickname)} // 닉네임 변경 처리
+            onSave={handleUpdateProfile} // "저장" 버튼 클릭 시 handleUpdateProfile 호출
           />
         </div>
       </div>
@@ -147,14 +151,17 @@ const AccountSettings = () => {
         <div style={{ fontWeight: "600", fontSize: "18px" }}>계정 정보</div>
         <div className="AccountProfileInfoItem">
           <div className="UserEmail">이메일 {profileData.email}</div>
-          <div className="SignOut" onClick={() => {}}>
+          <div
+            className="SignOut"
+            onClick={() => {
+              // 탈퇴하기 기능 구현 필요
+              console.log("탈퇴하기 클릭됨");
+            }}
+          >
             탈퇴하기
           </div>
         </div>
       </div>
-      <button className="Apply" onClick={handleUpdateProfile}>
-        수정
-      </button>
     </div>
   );
 };

@@ -157,7 +157,7 @@ const InquirySettings = () => {
             backgroundColor: "#F7F7FA", // 기본 배경색 설정
             border: "none", // 테두리 제거
             "&:focus": {
-              backgroundColor: "#FFBF00", // 포커스 시 배경색 주황색으로 변경
+              backgroundColor: "#FF903F", // 포커스 시 배경색 주황색으로 변경
             },
           },
           "& .MuiInputBase-root": {
@@ -172,8 +172,23 @@ const InquirySettings = () => {
         }}
       />
       <div className="submitButton">
-        <Button variant="contained" onClick={handleSubmit}>
-          제출
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+          sx={{
+            backgroundColor: "#FF903F", // 오렌지 색상
+            "&:hover": {
+              backgroundColor: "#ff7b1d", // 호버 시 더 진한 오렌지 색상
+            },
+            width: "127px", // 버튼 크기 조정
+            height: "44px", // 버튼 높이 조정
+            marginTop: "20px", // 위쪽 마진 조정
+            color: "#FFFFFF", // 텍스트 색상
+            fontWeight: "bold", // 텍스트 굵게
+            borderRadius: "8px", // 버튼의 둥근 모서리,
+          }}
+        >
+          문의하기
         </Button>
       </div>
     </div>

@@ -21,4 +21,14 @@
     color: #999;
     margin-left: 65%;
   }
-  
+  .SaveButton{
+    background-color: #FF903F;
+    border : none;
+    border-radius: 5px;
+    width: 57px;
+    height: 35px;
+    color :white
+  }
+  .SaveButton:hover{
+    background-color: #ff7b1d;
+  }

@@ -1,0 +1,44 @@
+.Wrapper{
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+}
+.TermContent{
+    width: 458px;
+    height: 403px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.h11{
+    font-size: 35px;
+    font-weight: 600;
+}
+.h33{
+    font-size: 20px;
+    font-weight: 500;
+    color: #949494;
+    margin-top : 15px;
+    margin-bottom : 70px;
+}
+.floppy{
+    width: 450px;
+    border : none;
+    height: 62px;
+    background-color: #F5F6FA;
+    border-radius: 10px;
+}
+.grep{
+    width: 200px;
+    height: 52px;
+    margin-top : 80px;
+    border-radius: 51px;
+    border : none;
+    color: white;
+    background-color: #FF903F;
+    font-size: 20px;
+    font-weight: 700;
+}
+.grep:hover{
+    background-color: #ff7e22;
+}

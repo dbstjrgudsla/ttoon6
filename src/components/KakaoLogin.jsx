@@ -1,7 +1,7 @@
 import { ReactComponent as Kakao } from "../img/Kakao.svg";
 
 const KakaoLogin = () => {
-  const link = `http://localhost:8080/oauth2/authorization/kakao`;
+  const link = `https://ttoon.site/oauth2/authorization/kakao`;
 
   const loginHandler = () => {
     window.location.href = link;

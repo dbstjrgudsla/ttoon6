@@ -1,3 +1,4 @@
+// SettingsModal.js
 import React, { useState } from "react";
 import "../styles/SettingsModal.css";
 import { AiOutlineClose } from "react-icons/ai";
@@ -7,18 +8,28 @@ import InquirySettings from "./InquirySettings";
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const [selectedTab, setSelectedTab] = useState("account"); // 기본 탭은 계정 설정
+  const [profileData, setProfileData] = useState({
+    nickName: "",
+    point: 0,
+  });
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
   };
 
-  // 선택된 탭에 따라 해당하는 컨텐츠를 반환
+  const handleProfileDataUpdate = (data) => {
+    setProfileData({
+      nickName: data.nickName,
+      point: data.point,
+    });
+  };
+
   const renderTabContent = () => {
     switch (selectedTab) {
       case "account":
         return (
           <div className="AccountSettings">
-            <AccountSettings />
+            <AccountSettings onUpdateProfileData={handleProfileDataUpdate} />
           </div>
         );
       case "language":
@@ -55,11 +66,14 @@ const SettingsModal = ({ isOpen, onClose }) => {
             <div className="ModalBody">
               <div className="SideBar">
                 <div className="Profile">
-                  {/* 프로필 정보 */}
                   <div className="ProfileInfo">
                     <div className="ProfileImage"></div>
-                    <div className="ProfileName">지윤석 님</div>
-                    <div className="ProfilePoints">200P</div>
+                    <div className="ProfileName">
+                      {profileData.nickName
+                        ? `${profileData.nickName} 님`
+                        : "사용자"}
+                    </div>
+                    <div className="ProfilePoints">{profileData.point}P</div>
                   </div>
                 </div>
                 <div className="SideBarSetting">
@@ -89,6 +103,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                       문의하기
                     </button>
                   </div>
+                  <button className="LogoutButton">로그아웃</button>
                 </div>
               </div>
               <div className="SettingsContents">{renderTabContent()}</div>
