@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: "https://ttoon.site/api",
   // 기본 Content-Type 설정 제거
 });
 
@@ -83,7 +83,7 @@ apiClient.interceptors.response.use(
           refreshToken
         );
         const response = await axios.post(
-          "http://localhost:8080/api/auth/reissue",
+          "https://ttoon.site/api/auth/reissue",
           null, // 또는 {}, 필요에 따라
           {
             headers: {
