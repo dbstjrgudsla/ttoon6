@@ -62,48 +62,50 @@ const AccountSettings = ({ onUpdateProfileData }) => {
     const nickNameValue =
       newNickName !== profileData.nickName ? newNickName : profileData.nickName;
 
-    // 프로필 사진 삭제 여부 확인
-    let isDelete = false;
-    let fileValue = null;
+    // 프로필 사진 변경 여부 확인
+    let fileValue = newProfileImage;
 
-    if (newProfileImage === null && profileData.imageUrl) {
-      // 프로필 사진을 삭제하려는 경우
-      isDelete = true;
-    } else if (newProfileImage) {
-      // 새로운 프로필 사진을 업로드하려는 경우
-      fileValue = newProfileImage;
+    // 이미지가 변경되지 않았을 경우 기존의 이미지 URL 사용
+    if (!newProfileImage && profileData.imageUrl) {
+      fileValue = profileData.imageUrl; // 기존 이미지 URL 사용
     }
 
     try {
       // 닉네임과 isDelete 값을 쿼리 스트링에 추가
       const params = new URLSearchParams();
       params.append("nickName", nickNameValue);
-      params.append("isDelete", isDelete);
+      params.append("isDelete", false); // 이미지 삭제를 지원하지 않는다고 가정 (항상 false)
 
-      // FormData는 파일이 있는 경우에만 생성
-      let formData = null;
+      // FormData 생성
+      const formData = new FormData();
       if (fileValue) {
-        formData = new FormData();
-        formData.append("file", fileValue); // 파일이 있을 때만 추가
+        if (typeof fileValue === "string") {
+          // 기존 이미지 URL이 있을 경우 URL을 전송
+          formData.append("fileUrl", fileValue); // 기존 이미지 URL 전송
+        } else {
+          // 새 이미지를 업로드할 경우 파일 전송
+          formData.append("file", fileValue);
+        }
+      } else {
+        console.error("프로필 이미지가 설정되지 않았습니다.");
+        return;
       }
 
       console.log("Sending PATCH request to /profile with token:", token);
       console.log("FormData (file):", fileValue);
       console.log("Query Params:", params.toString());
 
-      // FormData가 없으면 null을 보내지 않고, 요청 본문 없이 보내기
-      const response = formData
-        ? await apiClient.patch(`/profile?${params.toString()}`, formData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          })
-        : await apiClient.patch(`/profile?${params.toString()}`, null, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+      // FormData로 PATCH 요청 보내기
+      const response = await apiClient.patch(
+        `/profile?${params.toString()}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       console.log("Profile Update Response:", response.data);
 

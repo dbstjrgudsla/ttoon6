@@ -91,8 +91,72 @@
     font-size: 16px;
     background-color: #F7F7FA;
   }
-
-.AddFriendBtn{
-  margin-top: 30px;
+.friend-search-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
+
+.friend-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.friend-info {
+  display: flex;
+  align-items: center;
+}
+
+.friend-info .profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.friend-info .friend-nickname {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.friend-action {
+  display: flex;
+  align-items: center;
+}
+
+.AddFriendBtn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+}
+
+.friend-request {
+  background-color: #ff9e43;
+  color: white;
+}
+
+.friend-waiting {
+  background-color: #f1f1f1;
+  color: #a9abbb;
+  cursor: not-allowed;
+}
+
+.friend-accepted {
+  background-color: #f1f1f1;
+  color: #a9abbb;
+  cursor: not-allowed;
+}
+
+.friend-asking {
+  background-color: #ffcc43;
+  color: white;
+  cursor: not-allowed;
+}
+
   

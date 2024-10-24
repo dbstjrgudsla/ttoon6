@@ -1,0 +1,53 @@
+.friend-request-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .friend-request-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .friend-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .friend-info .profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .friend-info .friend-nickname {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .friend-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .accept-btn {
+    background-color: #ff9e43;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .reject-btn {
+    background-color: #f1f1f1;
+    color: #a9abbb;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  

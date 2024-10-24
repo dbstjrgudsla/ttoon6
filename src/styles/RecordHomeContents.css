@@ -32,3 +32,58 @@
     display: ruby;
   }
   
+
+  .FeedBundleWrapper {
+    border: 1px solid #eaeaea;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+  }
+  
+  .FeedHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .WriterImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .WriterName {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .FeedImage {
+    margin-bottom: 10px;
+  }
+  
+  .FeedImageContent {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .FeedTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .FeedContent {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  .FeedLikes {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  
