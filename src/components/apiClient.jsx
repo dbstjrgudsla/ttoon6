@@ -83,7 +83,7 @@ apiClient.interceptors.response.use(
           refreshToken
         );
         const response = await axios.post(
-          "http://localhost:8080/api/auth/reissue",
+          "https://ttoon.site/api/auth/reissue",
           null, // 또는 {}, 필요에 따라
           {
             headers: {
