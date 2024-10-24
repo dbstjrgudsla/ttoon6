@@ -1,8 +1,9 @@
+// src/api.js
 import axios from "axios";
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({
-  baseURL: "https://ttoon.site/api",
+  baseURL: "http://localhost:8080/api",
   // 기본 Content-Type 설정 제거
 });
 
@@ -82,10 +83,11 @@ apiClient.interceptors.response.use(
           refreshToken
         );
         const response = await axios.post(
-          "https://ttoon.site/api/auth/reissue",
-          {},
+          "http://localhost:8080/api/auth/reissue",
+          null, // 또는 {}, 필요에 따라
           {
             headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
               refreshToken: refreshToken,
             },
@@ -95,10 +97,11 @@ apiClient.interceptors.response.use(
         console.log("Reissue Response:", response.data);
 
         if (response.data.isSuccess) {
-          const { accessToken, refreshToken } = response.data.data;
+          const { accessToken, refreshToken: newRefreshToken } =
+            response.data.data;
 
           localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("refreshToken", refreshToken);
+          localStorage.setItem("refreshToken", newRefreshToken);
 
           apiClient.defaults.headers.Authorization = `Bearer ${accessToken}`;
           processQueue(null, accessToken);

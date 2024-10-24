@@ -75,18 +75,24 @@
     background-color: white;
     padding: 40px;
     border-radius: 10px;
-    width: 400px;
+    width: 33vw;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    height: 65vh;
   }
   
   /* 입력창 스타일 */
   .searchInput {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: none;
     border-radius: 5px;
     margin-top: 20px;
     font-size: 16px;
+    background-color: #F7F7FA;
   }
+
+.AddFriendBtn{
+  margin-top: 30px;
+}
   

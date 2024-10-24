@@ -30,11 +30,20 @@ const SelectChar = () => {
         "갈색 긴 머리, 20세 여성, 한국인, 빨간색 가디건에 검정색 치마",
     },
   ]);
-  const [selectedChar, setSelectedChar] = useState(null);
+
+  const [selectedChars, setSelectedChars] = useState([]); // Change to an array for multiple selections
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCharClick = (id) => {
-    setSelectedChar(id);
+    setSelectedChars((prevSelected) => {
+      if (prevSelected.includes(id)) {
+        // If already selected, remove it (toggle off)
+        return prevSelected.filter((charId) => charId !== id);
+      } else {
+        // If not selected, add it (toggle on)
+        return [...prevSelected, id];
+      }
+    });
   };
 
   const handleModalOpen = () => {
@@ -50,6 +59,8 @@ const SelectChar = () => {
     setIsModalOpen(false);
   };
 
+  const mainCharId = selectedChars.length > 0 ? selectedChars[0] : null; // Set the first selected character as main
+
   return (
     <div className="SelectCharWrapper">
       <div className="h1" style={{ margin: "40px 0px 40px 0px" }}>
@@ -61,7 +72,8 @@ const SelectChar = () => {
             key={char.id}
             charName={char.name}
             charDescription={char.description}
-            isSelected={selectedChar === char.id}
+            isSelected={selectedChars.includes(char.id)} // Check if the character is selected
+            isMainChar={mainCharId === char.id} // Check if this character is the main character
             onClick={() => handleCharClick(char.id)}
           />
         ))}

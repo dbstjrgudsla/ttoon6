@@ -1,16 +1,17 @@
+// src/components/Friend.js
 import React, { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import "../styles/Friend.css";
-import axios from "axios"; // Axios 임포트
+import apiClient from "./apiClient"; // API 클라이언트
 import FriendList from "./FriendList"; // 친구 목록 컴포넌트
 import ReceivedRequests from "./ReceivedRequest"; // 받은 요청 컴포넌트
 
-const Friend = ({ accessToken }) => {
-  // accessToken을 prop으로 받습니다.
+const Friend = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
+  const [searchResults, setSearchResults] = useState([]); // 검색 결과 상태
   const [error, setError] = useState(""); // 오류 메시지 상태
 
   const handleTabChange = (event, newValue) => {
@@ -23,7 +24,8 @@ const Friend = ({ accessToken }) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setSearchTerm(""); // 모달을 닫을 때 검색어 초기화
+    setSearchTerm(""); // 검색어 초기화
+    setSearchResults([]); // 검색 결과 초기화
     setError(""); // 오류 메시지 초기화
   };
 
@@ -31,20 +33,32 @@ const Friend = ({ accessToken }) => {
     setSearchTerm(e.target.value); // 검색어 업데이트
   };
 
-  const handleAddFriend = async () => {
+  // 친구 검색 GET API 호출 함수
+  const handleSearchFriend = async () => {
     try {
-      const response = await axios.post(
-        "https://ttoon.site/api/friends",
-        { nickName: searchTerm }, // 요청 본문
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+      const response = await apiClient.get(
+        `/friends/search?name=${searchTerm}&page=0`
       );
+      setSearchResults(response.data); // 검색 결과 설정
+    } catch (error) {
+      setError(error.response?.data?.message || "친구 검색에 실패했습니다."); // 오류 메시지 설정
+    }
+  };
 
-      console.log(response.data); // 성공적으로 추가된 친구의 정보
+  // 엔터 키가 눌렸을 때 친구 검색 함수 호출
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearchFriend(); // 엔터를 누르면 검색 실행
+    }
+  };
+
+  // 친구 추가 함수
+  const handleAddFriend = async (nickName) => {
+    try {
+      const response = await apiClient.post("/friends", {
+        nickName: nickName,
+      });
+      console.log(response.data); // 추가된 친구 정보 로그
       closeModal(); // 모달 닫기
     } catch (error) {
       setError(
@@ -99,12 +113,39 @@ const Friend = ({ accessToken }) => {
                 placeholder="친구의 닉네임을 검색해보세요"
                 value={searchTerm}
                 onChange={handleSearchChange}
+                onKeyDown={handleKeyDown} // 엔터 키 이벤트 핸들러
               />
-              <button onClick={handleAddFriend}>친구 추가</button>{" "}
-              {/* 친구 추가 버튼 */}
             </div>
             {error && <p className="error-message">{error}</p>}{" "}
-            {/* 오류 메시지 표시 */}
+            {/* 오류 메시지 */}
+            {/* 검색 결과 표시 */}
+            {searchResults.length > 0 && (
+              <ul className="friend-search-results">
+                {searchResults.map((friend) => (
+                  <li key={friend.friendId}>
+                    <img
+                      src={friend.profileUrl}
+                      alt="프로필"
+                      className="profile-image"
+                    />
+                    <span className="friend-nickname">{friend.nickName}</span>
+                    <button
+                      className="AddFriendBtn"
+                      onClick={() => handleAddFriend(friend.nickName)}
+                      disabled={friend.status !== "NOTHING"} // 상태에 따라 버튼 비활성화
+                    >
+                      {friend.status === "ACCEPT"
+                        ? "현재 친구"
+                        : friend.status === "WAITING"
+                        ? "요청됨"
+                        : friend.status === "ASKING"
+                        ? "받은 요청"
+                        : "친구 신청"}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       )}

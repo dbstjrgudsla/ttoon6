@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "../styles/Calender.css";
+import { ReactComponent as Thumbnail } from "../img/Thumbnail.svg";
 
-const Calender = () => {
+const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedImage, setSelectedImage] = useState(null);
 
+  // Calculate the number of days in the current month and the starting day
   const daysInMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() + 1,
@@ -17,11 +19,11 @@ const Calender = () => {
   ).getDay();
 
   const posts = {
-    2: { img: "https://via.placeholder.com/100" },
-    3: { img: "https://via.placeholder.com/100" },
-    4: { img: "https://via.placeholder.com/100" },
-    7: { img: "https://via.placeholder.com/100" },
-    10: { img: "https://via.placeholder.com/100" },
+    2: { img: "src/img/Thumbnail.svg" },
+    3: { img: "src/img/Thumbnail.svg" },
+    4: { img: "src/img/Thumbnail.svg" },
+    7: { img: "src/img/Thumbnail.svg" },
+    10: { img: "src/img/Thumbnail.svg" },
   };
 
   const handleDayClick = (day) => {
@@ -30,26 +32,45 @@ const Calender = () => {
     }
   };
 
-  const handleMonthChange = (increment) => {
-    setCurrentDate(
-      new Date(currentDate.setMonth(currentDate.getMonth() + increment))
-    );
+  const handleMonthChange = (event) => {
+    const [year, month] = event.target.value.split("-");
+    setCurrentDate(new Date(year, month - 1, 1));
   };
 
   return (
     <div className="calendar-container">
       <div className="calendar-header">
-        <button onClick={() => handleMonthChange(-1)}>이전 달</button>
-        <h3>
-          {currentDate.getFullYear()}년{" "}
-          {currentDate.toLocaleString("ko-KR", { month: "long" })}
-        </h3>
-        <button onClick={() => handleMonthChange(1)}>다음 달</button>
+        <select
+          className="custom-select"
+          value={`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}`}
+          onChange={handleMonthChange}
+        >
+          {Array.from({ length: 12 }).map((_, idx) => {
+            const date = new Date(currentDate.getFullYear(), idx, 1);
+            return (
+              <option key={idx} value={`${date.getFullYear()}-${idx + 1}`}>
+                {date.toLocaleString("ko-KR", {
+                  year: "numeric",
+                  month: "long",
+                })}
+              </option>
+            );
+          })}
+        </select>
       </div>
+
       <div className="calendar-grid">
+        {/* Days of the week */}
+        {["일", "월", "화", "수", "목", "금", "토"].map((day, idx) => (
+          <div key={idx} className="day-of-week">
+            {day}
+          </div>
+        ))}
+        {/* Render empty cells for days before the 1st */}
         {Array.from({ length: startDay }).map((_, idx) => (
           <div key={idx} className="calendar-day empty"></div>
         ))}
+        {/* Render the days of the month */}
         {Array.from({ length: daysInMonth }).map((_, idx) => {
           const day = idx + 1;
           return (
@@ -58,14 +79,18 @@ const Calender = () => {
               className={`calendar-day ${posts[day] ? "has-post" : ""}`}
               onClick={() => handleDayClick(day)}
             >
-              <div>{day}</div>
+              <div className="day-number">{day}</div>
               {posts[day] && (
-                <img src={posts[day].img} alt={`Post on day ${day}`} />
+                <Thumbnail
+                  className="thumbnail-image"
+                  alt={`Post on day ${day}`}
+                />
               )}
             </div>
           );
         })}
       </div>
+      {/* Image viewer for selected posts */}
       {selectedImage && (
         <div className="image-viewer">
           <img src={selectedImage} alt="Selected Post" />
@@ -75,4 +100,4 @@ const Calender = () => {
   );
 };
 
-export default Calender;
+export default Calendar;

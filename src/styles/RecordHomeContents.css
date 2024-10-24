@@ -1,13 +1,34 @@
-.ContentsWrapper{
-    width : 960px;
-    height : 100vh;
-    padding-top : 30px;
+.ContentsWrapper {
+    width: 960px;
+    height: 100vh;
+    padding-top: 30px;
     align-items: flex-start;
-}
-.h1{
+  }
+  
+  .h1 {
     font-size: 28px;
     font-weight: 700;
-}
-.Feed {
+  }
+  
+  .TabsWrapper {
+    display: flex;
+    justify-content: space-between; /* Tabs와 "내피드만 보기" 스위치 사이에 공간을 추가 */
+    align-items: center; /* 세로 방향으로 가운데 정렬 */
+    margin-bottom: px;
+  }
+  
+  .OnlyMine {
+    display: flex;
+    align-items: center; /* "내피드만 보기" 텍스트와 스위치 세로 정렬 */
+  }
+  
+  .h3 {
+    margin-right: 8px; /* 텍스트와 스위치 사이 간격 */
+    font-size: 18px;
+    color: #000;
+  }
+  
+  .Feed {
     display: ruby;
-}
+  }
+  

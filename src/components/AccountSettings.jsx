@@ -1,4 +1,4 @@
-// AccountSettings.js
+// AccountSettings.jsx
 import React, { useState, useEffect } from "react";
 import apiClient from "./apiClient"; // API 클라이언트 임포트
 import "../styles/AccountSettings.css"; // 스타일 시트 임포트
@@ -21,7 +21,6 @@ const AccountSettings = ({ onUpdateProfileData }) => {
 
   useEffect(() => {
     fetchProfileData(); // 컴포넌트가 마운트될 때 프로필 데이터 가져오기
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchProfileData = async () => {
@@ -36,18 +35,19 @@ const AccountSettings = ({ onUpdateProfileData }) => {
       const response = await apiClient.get("/profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log("Fetched Profile Data:", response.data);
       if (response.data.isSuccess) {
         setProfileData(response.data.data);
-        setNewNickName(response.data.data.nickName); // 닉네임 상태 업데이트
-        onUpdateProfileData(response.data.data); // 부모 컴포넌트로 프로필 데이터 전달
+        setNewNickName(response.data.data.nickName);
+        onUpdateProfileData({
+          nickName: response.data.data.nickName,
+          point: response.data.data.point,
+          imageUrl: response.data.data.imageUrl, // 프로필 이미지 전달
+        });
       } else {
-        console.error("Error fetching profile data:", response.data.message);
-        navigate("/login"); // 인증 실패 시 로그인 페이지로 이동
+        navigate("/login");
       }
     } catch (error) {
-      console.error("Error fetching profile data:", error);
-      navigate("/login"); // 에러 발생 시 로그인 페이지로 이동
+      navigate("/login");
     }
   };
 
@@ -55,12 +55,12 @@ const AccountSettings = ({ onUpdateProfileData }) => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
       console.error("No access token found");
-      return; // 오류만 로그로 남김
+      return;
     }
 
     // 닉네임이 변경되었는지 확인
     const nickNameValue =
-      newNickName !== profileData.nickName ? newNickName : null;
+      newNickName !== profileData.nickName ? newNickName : profileData.nickName;
 
     // 프로필 사진 삭제 여부 확인
     let isDelete = false;
@@ -74,44 +74,36 @@ const AccountSettings = ({ onUpdateProfileData }) => {
       fileValue = newProfileImage;
     }
 
-    // FormData 생성
-    const formData = new FormData();
-
-    // 쿼리 스트링에 닉네임 추가 (null인 경우 생략)
-    const params = new URLSearchParams();
-    if (nickNameValue !== null) {
-      params.append("nickName", nickNameValue);
-    }
-
-    // isDelete는 필수 입력값
-    formData.append("isDelete", isDelete);
-
-    // 파일 추가 (삭제가 아니고, 새로운 파일이 있는 경우)
-    if (fileValue) {
-      formData.append("file", fileValue);
-    } else {
-      // 파일을 보내지 않거나 삭제하는 경우에는 null을 보냅니다.
-      formData.append("file", null);
-    }
-
     try {
-      console.log("Sending PATCH request to /profile with token:", token);
-      console.log("FormData:", {
-        nickName: nickNameValue,
-        isDelete: isDelete,
-        file: fileValue,
-      });
+      // 닉네임과 isDelete 값을 쿼리 스트링에 추가
+      const params = new URLSearchParams();
+      params.append("nickName", nickNameValue);
+      params.append("isDelete", isDelete);
 
-      const response = await apiClient.patch(
-        `/profile?${params.toString()}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      // FormData는 파일이 있는 경우에만 생성
+      let formData = null;
+      if (fileValue) {
+        formData = new FormData();
+        formData.append("file", fileValue); // 파일이 있을 때만 추가
+      }
+
+      console.log("Sending PATCH request to /profile with token:", token);
+      console.log("FormData (file):", fileValue);
+      console.log("Query Params:", params.toString());
+
+      // FormData가 없으면 null을 보내지 않고, 요청 본문 없이 보내기
+      const response = formData
+        ? await apiClient.patch(`/profile?${params.toString()}`, formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+        : await apiClient.patch(`/profile?${params.toString()}`, null, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
       console.log("Profile Update Response:", response.data);
 

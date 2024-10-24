@@ -1,13 +1,20 @@
 .calendar-container {
-  width: 80%;
+  width: 100%;
   margin: auto;
+  border-radius: 8px;
 }
 
 .calendar-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+}
+.custom-select {
+  border: none;
+  outline: none; /* 포커스 시 나타나는 테두리 제거 */
+  background-color: transparent; /* 선택 상자 배경을 투명하게 설정 */
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .calendar-grid {
@@ -16,14 +23,23 @@
   gap: 10px;
 }
 
+.day-of-week {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px 0;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
 .calendar-day {
   width: 100%;
   padding-top: 100%;
   position: relative;
-  background-color: #f0f0f0;
+  background-color: #f9f9f9;
   border: 1px solid #ddd;
+  border-radius: 8px;
   cursor: pointer;
-  text-align: center;
+  text-align: right;
 }
 
 .calendar-day.empty {
@@ -31,21 +47,36 @@
   cursor: default;
 }
 
-.calendar-day.has-post img {
+.calendar-day.has-post {
+  background-color: #e0e4ff;
+}
+
+.day-number {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.thumbnail-image {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70%;
-  height: 70%;
+  width: 80%;
+  height: 80%;
   object-fit: cover;
+  border-radius: 8px;
 }
 
 .image-viewer {
   margin-top: 20px;
   text-align: center;
 }
-.OnlyMine{
-  display: flex;
-  
+
+.image-viewer img {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 8px;
 }
