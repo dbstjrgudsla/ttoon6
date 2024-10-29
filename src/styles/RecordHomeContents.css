@@ -4,86 +4,107 @@
     padding-top: 30px;
     align-items: flex-start;
   }
-  
-  .h1 {
+.h1 {
     font-size: 28px;
     font-weight: 700;
-  }
-  
-  .TabsWrapper {
-    display: flex;
-    justify-content: space-between; /* Tabs와 "내피드만 보기" 스위치 사이에 공간을 추가 */
-    align-items: center; /* 세로 방향으로 가운데 정렬 */
-    margin-bottom: px;
-  }
-  
-  .OnlyMine {
-    display: flex;
-    align-items: center; /* "내피드만 보기" 텍스트와 스위치 세로 정렬 */
-  }
-  
-  .h3 {
-    margin-right: 8px; /* 텍스트와 스위치 사이 간격 */
-    font-size: 18px;
-    color: #000;
-  }
-  
-  .Feed {
-    display: ruby;
-  }
-  
-
-  .FeedBundleWrapper {
-    border: 1px solid #eaeaea;
-    padding: 20px;
     margin-bottom: 20px;
-    border-radius: 10px;
-  }
-  
-  .FeedHeader {
+}
+
+.TabsWrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .WriterImage {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .WriterName {
-    font-size: 16px;
-    font-weight: bold;
-  }
-  
-  .FeedImage {
+    margin-bottom: 40px;
+}
+
+.OnlyMine {
+    display: flex;
+    align-items: center;
+}
+
+.h3 {
+    margin-right: 8px;
+    font-size: 18px;
+    color: #000;
+}
+
+.FeedWrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 두 개의 피드를 한 줄에 배치 */
+    gap: 20px;
+}
+
+.FeedBundleWrapper {
+    background-color: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.FeedHeader {
+    display: flex;
+    align-items: center;
     margin-bottom: 10px;
-  }
-  
-  .FeedImageContent {
+}
+
+.WriterImage {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.WriterName {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.MoreOptions {
+    margin-left: auto;
+    font-size: 18px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.FeedImage {
+    margin: 10px 0;
+}
+
+.FeedImageContent {
     width: 100%;
     height: auto;
     border-radius: 10px;
-  }
-  
-  .FeedTitle {
-    font-size: 18px;
+    background-color: #e0e0e0;
+}
+
+.FeedTitle {
+    font-size: 16px;
     font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .FeedContent {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.FeedContent {
     font-size: 14px;
     color: #555;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.FeedDate {
+    font-size: 12px;
+    color: #84889A;
+    margin-top: 10px;
     margin-bottom: 10px;
-  }
-  
-  .FeedLikes {
+}
+
+.FeedLikes {
     font-size: 14px;
-    color: #888;
-  }
-  
-  
+    color: #FF6B6B;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

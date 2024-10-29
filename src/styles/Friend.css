@@ -158,5 +158,8 @@
   color: white;
   cursor: not-allowed;
 }
-
-  
+.whiteback{
+  background-color: white;
+  display: flex;
+  height: 80vh;
+}

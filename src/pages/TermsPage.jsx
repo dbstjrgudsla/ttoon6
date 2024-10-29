@@ -7,7 +7,9 @@ const TermsPage = () => {
   const navigate = useNavigate();
   const [isGuest, setIsGuest] = useState(true);
   const [nickName, setNickName] = useState("");
+  const [error, setError] = useState("");
 
+  // 컴포넌트가 처음 로드될 때 토큰을 확인하고, 상태를 업데이트
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
@@ -18,35 +20,40 @@ const TermsPage = () => {
     }
   }, []);
 
+  // isGuest 상태가 false로 변경되면 메인 페이지로 이동
+  useEffect(() => {
+    if (!isGuest) {
+      navigate("/home");
+    }
+  }, [isGuest, navigate]);
+
+  // 닉네임 입력 후 약관 동의 처리
   const handleTermsAgreement = async () => {
     const accessToken = localStorage.getItem("accessToken");
-
-    console.log("닉네임:", nickName);
-    console.log("액세스 토큰:", accessToken);
 
     try {
       const response = await axios.post(
         "https://ttoon.site/api/join",
-        { nickName }, // Include the nickname in the request body
+        { nickName }, // 닉네임을 요청 바디에 포함
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
 
-      console.log("응답 데이터:", response.data);
-
       if (response.data.isSuccess) {
-        const { accessToken, refreshToken } = response.data;
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-        localStorage.setItem("isGuest", "false"); // 약관 동의 시 게스트 상태 해제
-        setIsGuest(false); // 로컬 상태 업데이트
-        navigate("/home"); // 약관 동의 후 메인 페이지로 이동
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+          response.data;
+        localStorage.setItem("accessToken", newAccessToken);
+        localStorage.setItem("refreshToken", newRefreshToken);
+        localStorage.setItem("isGuest", "false");
+        setIsGuest(false); // 상태 업데이트 후 useEffect에서 페이지 이동
       } else {
         console.error("약관 동의 실패:", response.data.message);
+        setError("약관 동의에 실패했습니다. 다시 시도해주세요.");
       }
     } catch (error) {
       console.error("약관 동의 중 오류 발생:", error);
+      setError("서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
 
@@ -66,6 +73,8 @@ const TermsPage = () => {
             placeholder="닉네임을 입력해주세요(최대10자)"
           />
         </div>
+
+        {error && <p className="error-message">{error}</p>}
 
         <button className="grep" onClick={handleTermsAgreement}>
           완료

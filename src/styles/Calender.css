@@ -2,6 +2,7 @@
   width: 100%;
   margin: auto;
   border-radius: 8px;
+  margin-bottom: 50px; /* 달력 하단에 여백 추가 */
 }
 
 .calendar-header {
@@ -9,10 +10,11 @@
   align-items: center;
   margin-bottom: 30px;
 }
+
 .custom-select {
   border: none;
-  outline: none; /* 포커스 시 나타나는 테두리 제거 */
-  background-color: transparent; /* 선택 상자 배경을 투명하게 설정 */
+  outline: none;
+  background-color: transparent;
   font-size: 20px;
   font-weight: 700;
 }

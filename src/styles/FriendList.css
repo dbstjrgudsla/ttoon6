@@ -1,0 +1,142 @@
+.FriendListWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh; /* 전체 화면 높이로 설정 */
+  flex-direction: column;
+  padding: 20px; /* 내부 여백 추가 */
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* 스크롤 가능 */
+}
+
+.no-friend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #84889a;
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  width: 100%;
+}
+
+.friend-profile {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.friend-nickname {
+  flex: 1;
+  font-size: 16px;
+  color: #333;
+  text-align: left;
+}
+
+.delete-friend-button {
+  background-color: #ffebdc;
+  color: #ff903f;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* 모달 스타일 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-modal {
+  background-color: white;
+  width: 400px;
+  height: 380px;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  color:#1B1C1E;
+}
+.trash-icon{
+  margin-top :15px;
+  margin-bottom: 20px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cancel-button {
+  background-color: #FFEBDC;
+  color: #FF903F;
+  border: none;
+  border-radius: 32px;
+  padding: 10px 30px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.confirm-delete-button {
+  background-color: #ff903f;
+  color: white;
+  border: none;
+  border-radius: 32px;
+  padding: 10px 30px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.h2{
+  font-size: 24px;
+  font-weight: 700;
+  color: #1B1C1E;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.confirm-delete-button:hover {
+  background-color: #ff6600; /* 짙은 오렌지 색상 */
+  color: #ffffff; /* 짙은 오렌지 텍스트 */
+}
+.cancel-button:hover {
+  background-color: #a3a3a3;
+  color: #fafafa;
+}

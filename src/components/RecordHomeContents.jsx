@@ -5,6 +5,7 @@ import "../styles/RecordHomeContents.css";
 import Calender from "./Calender";
 import { Switch } from "@mui/material";
 import apiClient from "./apiClient";
+import DefaultProfile from "../img/DefaultProfile.svg"; // 기본 프로필 이미지 경로
 
 const RecordHomeContents = ({ nickname }) => {
   const [currentTab, setCurrentTab] = useState(0);
@@ -22,8 +23,6 @@ const RecordHomeContents = ({ nickname }) => {
             onlyMine: onlyMine,
           },
         });
-
-        console.log("Fetched Feed Data:", response.data.data);
 
         if (response.data.isSuccess) {
           setFeeds(response.data.data);
@@ -101,15 +100,13 @@ const RecordHomeContents = ({ nickname }) => {
             {feeds.map((feed) => (
               <div key={feed.feedId} className="FeedBundleWrapper">
                 <div className="FeedHeader">
-                  <div className="FeedWriter">
-                    <img
-                      src={feed.writerImage}
-                      alt="프로필"
-                      className="WriterImage"
-                    />
-                    <span className="WriterName">{feed.writerName}</span>
-                  </div>
-                  <div className="FeedDate">{feed.createdDate}</div>
+                  <img
+                    src={feed.writerImage || DefaultProfile} // 프로필 이미지가 없으면 기본 이미지 사용
+                    alt="프로필"
+                    className="WriterImage"
+                  />
+                  <span className="WriterName">{feed.writerName}</span>
+                  <span className="MoreOptions">•••</span>
                 </div>
                 <div className="FeedImage">
                   {feed.imageUrl.length > 0 ? (
@@ -126,6 +123,7 @@ const RecordHomeContents = ({ nickname }) => {
                 </div>
                 <div className="FeedTitle">{feed.title}</div>
                 <div className="FeedContent">{feed.content}</div>
+                <div className="FeedDate">{feed.createdDate}</div>
                 <div className="FeedLikes">
                   <span role="img" aria-label="likes">
                     ❤️
