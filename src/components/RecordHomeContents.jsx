@@ -1,46 +1,155 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // useNavigate 가져오기
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import "../styles/RecordHomeContents.css";
 import Calender from "./Calender";
 import { Switch } from "@mui/material";
 import apiClient from "./apiClient";
-import DefaultProfile from "../img/DefaultProfile.svg"; // 기본 프로필 이미지 경로
+import SingleFeedModal from "./SingleFeedModal";
+import DefaultProfile from "../img/DefaultProfile.svg";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
+import DeleteConfirmationModal from "./DeleteConfirmationModal"; // 모달 컴포넌트 가져오기
 
-const RecordHomeContents = ({ nickname }) => {
+const RecordHomeContents = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [onlyMine, setOnlyMine] = useState(false);
   const [feeds, setFeeds] = useState([]);
+  const [nickname, setNickname] = useState("");
+  const [selectedFeed, setSelectedFeed] = useState(null);
+  const [calendarData, setCalendarData] = useState([]);
   const [error, setError] = useState("");
+  const [showOptions, setShowOptions] = useState(null);
+  const [likeCounts, setLikeCounts] = useState({});
+  const [userLikes, setUserLikes] = useState({});
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [feedToDelete, setFeedToDelete] = useState(null);
+
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
-    const fetchFeeds = async () => {
+    const fetchNickname = async () => {
       try {
-        const response = await apiClient.get("/feeds", {
-          params: {
-            page: 0,
-            size: 10,
-            onlyMine: onlyMine,
-          },
-        });
-
+        const response = await apiClient.get("/profile");
         if (response.data.isSuccess) {
-          setFeeds(response.data.data);
+          setNickname(response.data.data.nickName);
         } else {
-          setError("피드를 불러오는 데 실패했습니다.");
+          setError("프로필 정보를 불러오는 데 실패했습니다.");
         }
       } catch (error) {
-        if (error.response?.status === 401) {
-          setError("인증이 만료되었습니다. 다시 로그인해주세요.");
-          window.location.href = "/login";
-        } else {
-          setError("피드를 가져오는 중 오류가 발생했습니다.");
-        }
+        setError("프로필 정보를 가져오는 중 오류가 발생했습니다.");
       }
     };
+    fetchNickname();
+  }, []);
 
+  useEffect(() => {
     fetchFeeds();
+    fetchCalendarData();
   }, [onlyMine]);
+
+  const fetchFeeds = async () => {
+    try {
+      const response = await apiClient.get("/feeds", {
+        params: { page: 0, size: 10, onlyMine: onlyMine },
+      });
+
+      if (response.data.isSuccess) {
+        setFeeds(response.data.data);
+
+        const initialLikes = {};
+        const initialUserLikes = {};
+
+        response.data.data.forEach((feed) => {
+          initialLikes[feed.feedId] = feed.likes;
+          initialUserLikes[feed.feedId] = feed.likeOrNot || false;
+        });
+
+        setLikeCounts(initialLikes);
+        setUserLikes(initialUserLikes);
+      } else {
+        setError("피드를 불러오는 데 실패했습니다.");
+      }
+    } catch (error) {
+      setError("피드를 가져오는 중 오류가 발생했습니다.");
+    }
+  };
+
+  const fetchCalendarData = async () => {
+    const yearMonth = `${new Date().getFullYear()}-${String(
+      new Date().getMonth() + 1
+    ).padStart(2, "0")}`;
+    try {
+      const response = await apiClient.get(
+        `/home/calendar?yearMonth=${yearMonth}`
+      );
+      if (response.data.isSuccess) {
+        setCalendarData(response.data.data);
+      } else {
+        setError("캘린더 데이터를 불러오는 데 실패했습니다.");
+      }
+    } catch (error) {
+      setError("캘린더 데이터를 가져오는 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handleLikeToggle = async (feedId) => {
+    const isLiked = userLikes[feedId];
+    try {
+      if (isLiked) {
+        const response = await apiClient.delete(`/likes/${feedId}`);
+        if (response.data.isSuccess) {
+          setLikeCounts((prev) => ({
+            ...prev,
+            [feedId]: prev[feedId] - 1,
+          }));
+          setUserLikes((prev) => ({
+            ...prev,
+            [feedId]: false,
+          }));
+        }
+      } else {
+        const response = await apiClient.post(`/likes/${feedId}`);
+        if (response.data.isSuccess) {
+          setLikeCounts((prev) => ({
+            ...prev,
+            [feedId]: prev[feedId] + 1,
+          }));
+          setUserLikes((prev) => ({
+            ...prev,
+            [feedId]: true,
+          }));
+        }
+      }
+    } catch (error) {
+      console.error("좋아요 처리 중 오류 발생:", error);
+    }
+  };
+
+  const openDeleteModal = (feedId, feedDate) => {
+    setFeedToDelete({ id: feedId, date: feedDate });
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setFeedToDelete(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!feedToDelete) return;
+    try {
+      const response = await apiClient.delete(`/delete/${feedToDelete.id}`);
+      if (response.data.isSuccess) {
+        closeDeleteModal();
+        window.location.reload(); // 삭제 후 페이지 새로고침
+      } else {
+        alert("피드 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      alert("피드 삭제 중 오류가 발생했습니다.");
+    }
+  };
 
   const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
@@ -48,6 +157,18 @@ const RecordHomeContents = ({ nickname }) => {
 
   const handleSwitchChange = (event) => {
     setOnlyMine(event.target.checked);
+  };
+
+  const handleFeedClick = (feed) => {
+    setSelectedFeed(feed);
+  };
+
+  const closeModal = () => {
+    setSelectedFeed(null);
+  };
+
+  const toggleOptions = (feedId) => {
+    setShowOptions((prevId) => (prevId === feedId ? null : feedId));
   };
 
   return (
@@ -91,22 +212,54 @@ const RecordHomeContents = ({ nickname }) => {
         className="calender"
         style={{ display: currentTab === 0 ? "" : "none" }}
       >
-        <Calender />
+        <Calender data={calendarData} />
       </div>
       <div className="Feed" style={{ display: currentTab === 1 ? "" : "none" }}>
         {error && <p className="error-message">{error}</p>}
         {feeds && feeds.length > 0 ? (
           <div className="FeedWrapper">
             {feeds.map((feed) => (
-              <div key={feed.feedId} className="FeedBundleWrapper">
+              <div
+                key={feed.feedId}
+                className="FeedBundleWrapper"
+                onClick={() => handleFeedClick(feed)}
+              >
                 <div className="FeedHeader">
                   <img
-                    src={feed.writerImage || DefaultProfile} // 프로필 이미지가 없으면 기본 이미지 사용
+                    src={feed.writerImage || DefaultProfile}
                     alt="프로필"
                     className="WriterImage"
                   />
                   <span className="WriterName">{feed.writerName}</span>
-                  <span className="MoreOptions">•••</span>
+                  <span
+                    className="MoreOptions"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleOptions(feed.feedId);
+                    }}
+                  >
+                    •••
+                  </span>
+                  {showOptions === feed.feedId && (
+                    <div className="optionsMenu">
+                      <a
+                        href={feed.imageUrl[0]}
+                        download={`feed_${feed.feedId}.jpg`}
+                        className="downloadButton"
+                      >
+                        이미지 다운로드
+                      </a>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openDeleteModal(feed.feedId, feed.createdDate);
+                        }}
+                        className="deleteButton"
+                      >
+                        삭제하기
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <div className="FeedImage">
                   {feed.imageUrl.length > 0 ? (
@@ -122,13 +275,36 @@ const RecordHomeContents = ({ nickname }) => {
                   )}
                 </div>
                 <div className="FeedTitle">{feed.title}</div>
-                <div className="FeedContent">{feed.content}</div>
+                <div className="FeedContent">
+                  {feed.content.length > 100
+                    ? `${feed.content.substring(0, 100)}...`
+                    : feed.content}
+                </div>
                 <div className="FeedDate">{feed.createdDate}</div>
                 <div className="FeedLikes">
-                  <span role="img" aria-label="likes">
-                    ❤️
-                  </span>{" "}
-                  {feed.likes}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLikeToggle(feed.feedId);
+                    }}
+                    className="likeButton"
+                    style={{
+                      backgroundColor: "transparent",
+                      border: "none",
+                      cursor: "pointer",
+                      fontSize: "18px",
+                      marginTop: "5px",
+                    }}
+                  >
+                    {userLikes[feed.feedId] ? (
+                      <IoMdHeart style={{ color: "red" }} />
+                    ) : (
+                      <IoMdHeartEmpty style={{ color: "black" }} />
+                    )}
+                  </button>
+                  <span style={{ color: "black", fontSize: "16px" }}>
+                    {likeCounts[feed.feedId]}
+                  </span>
                 </div>
               </div>
             ))}
@@ -137,6 +313,17 @@ const RecordHomeContents = ({ nickname }) => {
           <p>표시할 피드가 없습니다.</p>
         )}
       </div>
+      {selectedFeed && (
+        <SingleFeedModal feed={selectedFeed} onClose={closeModal} />
+      )}
+      {isDeleteModalOpen && (
+        <DeleteConfirmationModal
+          isOpen={isDeleteModalOpen}
+          onClose={closeDeleteModal}
+          onConfirm={handleConfirmDelete}
+          date={feedToDelete?.date}
+        />
+      )}
     </div>
   );
 };

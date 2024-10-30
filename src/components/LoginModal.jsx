@@ -51,10 +51,10 @@ const LoginModal = ({ isOpen, onClose }) => {
   return (
     <>
       {isOpen && (
-        <div className="modalWrapper">
-          <div className="modal">
-            <div className="modalContent">
-              <div className="closeButton">
+        <div className="modalWrapperlogin">
+          <div className="modallogin">
+            <div className="modalContentlogin">
+              <div className="closeButtonlogin">
                 <AiOutlineClose
                   onClick={onClose}
                   style={{ color: "#9c9c9c", width: "36px", height: "36px" }}

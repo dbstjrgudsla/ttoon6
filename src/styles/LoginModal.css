@@ -1,4 +1,4 @@
-.modalWrapper {
+.modalWrapperlogin {
     width: 100%;
     height: 100%;
     position: fixed;
@@ -9,7 +9,7 @@
     align-items: center;
     background: rgba(0, 0, 0, 0.5);
 }
-.modal{
+.modallogin{
     background-color: #ffffff;
     width: 538px;
     height: 670px;
@@ -30,10 +30,10 @@
     font-weight: 500;
     margin-top: 2vh;
 }
-.modalContnet{
+.modalContnetlogin{
     position: relative;
 }
-.closeButton {
+.closeButtonlogin {
     display: flex;
     flex-direction: row-reverse;
 }

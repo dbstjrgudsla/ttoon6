@@ -4,7 +4,6 @@ import axios from "axios";
 // Axios 인스턴스 생성
 const apiClient = axios.create({
   baseURL: "https://ttoon.site/api",
-  // 기본 Content-Type 설정 제거
 });
 
 // 재발급 요청 상태를 추적하기 위한 변수
@@ -30,21 +29,14 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    console.log("Request Config:", config); // 추가된 로그
     return config;
   },
-  (error) => {
-    console.error("Request Error:", error);
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 // 응답 인터셉터
 apiClient.interceptors.response.use(
-  (response) => {
-    console.log("Response:", response); // 응답 로그 추가
-    return response;
-  },
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
@@ -53,8 +45,6 @@ apiClient.interceptors.response.use(
       error.response.status === 401 &&
       !originalRequest._retry
     ) {
-      console.log("401 Unauthorized Error - Attempting to refresh token");
-
       originalRequest._retry = true;
 
       if (isRefreshing) {
@@ -62,61 +52,57 @@ apiClient.interceptors.response.use(
           failedQueue.push({ resolve, reject });
         })
           .then((token) => {
-            console.log("New token received from queue:", token);
             originalRequest.headers.Authorization = `Bearer ${token}`;
-            console.log("Retrying original request with new token");
             return apiClient(originalRequest);
           })
-          .catch((err) => {
-            console.error("Error in token refresh queue:", err);
-            return Promise.reject(err);
-          });
+          .catch((err) => Promise.reject(err));
       }
 
       isRefreshing = true;
-
+      const accessToken = localStorage.getItem("accessToken");
       const refreshToken = localStorage.getItem("refreshToken");
 
       try {
-        console.log(
-          "Requesting token refresh with refreshToken:",
-          refreshToken
-        );
+        console.log("재발급 요청을 시작합니다. RefreshToken:", refreshToken);
+
         const response = await axios.post(
           "https://ttoon.site/api/auth/reissue",
-          null, // 또는 {}, 필요에 따라
+          null,
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              refreshToken: refreshToken,
+              Authorization: `Bearer ${accessToken}`,
+              refreshToken: refreshToken, // refreshToken 헤더로 전달
             },
           }
         );
 
-        console.log("Reissue Response:", response.data);
+        console.log("재발급 응답:", response.data); // 재발급 응답을 로그로 출력
 
         if (response.data.isSuccess) {
-          const { accessToken, refreshToken: newRefreshToken } =
+          const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
             response.data.data;
 
-          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("accessToken", newAccessToken);
           localStorage.setItem("refreshToken", newRefreshToken);
 
-          apiClient.defaults.headers.Authorization = `Bearer ${accessToken}`;
-          processQueue(null, accessToken);
+          console.log("새로운 accessToken:", newAccessToken); // 새로운 accessToken 로그
+          console.log("새로운 refreshToken:", newRefreshToken); // 새로운 refreshToken 로그
 
-          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-          console.log("Retrying original request with new access token");
+          apiClient.defaults.headers.Authorization = `Bearer ${newAccessToken}`;
+          processQueue(null, newAccessToken);
+
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return apiClient(originalRequest);
         } else {
+          console.error("토큰 재발급 실패:", response.data.message);
           throw new Error("Reissue failed");
         }
       } catch (refreshError) {
-        console.error("Refresh Token Error:", refreshError);
+        console.error("재발급 요청 중 오류 발생:", refreshError);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        window.location.href = "/login";
+        alert("로그인 상태가 만료되었습니다. 다시 로그인해주세요.");
         processQueue(refreshError, null);
         return Promise.reject(refreshError);
       } finally {
@@ -124,7 +110,7 @@ apiClient.interceptors.response.use(
       }
     }
 
-    console.error("Response Error:", error);
+    console.error("API 요청 중 오류 발생:", error.response || error.message);
     return Promise.reject(error);
   }
 );

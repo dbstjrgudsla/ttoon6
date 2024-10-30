@@ -48,11 +48,20 @@ const Header = ({ onSelectTab, currentTab }) => {
     navigate("/addtoon");
   };
 
+  const handleLogoClick = () => {
+    navigate("/home"); // 메인 페이지 경로로 리다이렉트
+  };
+
   return (
     <div className="HeaderWrapper">
       {isLoggedIn ? (
         <div className="MainHeaderItem">
-          <MainLogo width="136" height="24" />
+          <MainLogo
+            width="136"
+            height="24"
+            onClick={handleLogoClick}
+            style={{ cursor: "pointer" }}
+          />
           <Tabs
             value={currentTab}
             onChange={handleTabChange}
@@ -80,7 +89,12 @@ const Header = ({ onSelectTab, currentTab }) => {
           </Tabs>
         </div>
       ) : (
-        <MainLogo width="136" height="24" />
+        <MainLogo
+          width="136"
+          height="24"
+          onClick={handleLogoClick}
+          style={{ cursor: "pointer" }}
+        />
       )}
       <div className="HeaderMenu">
         {isLoggedIn ? (
