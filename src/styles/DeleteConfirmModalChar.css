@@ -1,4 +1,4 @@
-.modalOverlay1 {
+.modalOverlay9 {
     position: fixed;
     top: 0;
     left: 0;
@@ -11,7 +11,7 @@
     z-index: 1000;
   }
   
-  .modalContent2 {
+  .modalContent9 {
     background: #fff;
     width: 400px;
     height: 350px;
@@ -30,9 +30,11 @@
     font-size: 30px;
     cursor: pointer;
   }
+
+  
   .buttonContainer {
     display: flex;
-    margin-top: 60px;
+    margin-top: 30px;
     justify-content: center;
   }
   
@@ -61,7 +63,6 @@
     width: 190px;
     height: 48px;
     font-weight: 700;
-    
   }
 
   .confirmButton:hover {

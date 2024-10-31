@@ -1,65 +1,88 @@
-import React, { useState } from "react";
+// SelectChar Component
+import React, { useState, useEffect } from "react";
+import apiClient from "./apiClient"; // apiClient 경로 확인
+import CharacterListModal from "./CharacterListModal";
 import CharBox from "./CharBox";
-import CharPlusModal from "./CharPlusModal";
 import "../styles/SelectChar.css";
 
 const SelectChar = () => {
-  const [characters, setCharacters] = useState([
-    {
-      id: 1,
-      name: "조혜원",
-      description:
-        "갈색 긴 머리, 20세 여성, 한국인, 빨간색 가디건에 검정색 치마",
-    },
-    {
-      id: 2,
-      name: "김혜원",
-      description:
-        "갈색 긴 머리, 20세 여성, 한국인, 빨간색 가디건에 검정색 치마",
-    },
-    {
-      id: 3,
-      name: "이혜원",
-      description:
-        "검정색 긴 생머리, 30세 여성, 한국인, 흰색 브이넥 반팔티에 청바지, 검정색 백팩",
-    },
-    {
-      id: 4,
-      name: "박혜원",
-      description:
-        "갈색 긴 머리, 20세 여성, 한국인, 빨간색 가디건에 검정색 치마",
-    },
-  ]);
+  const [characters, setCharacters] = useState([]);
+  const [selectedChars, setSelectedChars] = useState([]);
+  const [isCharacterListModalOpen, setIsCharacterListModalOpen] =
+    useState(false);
 
-  const [selectedChars, setSelectedChars] = useState([]); // Change to an array for multiple selections
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    const fetchCharacters = async () => {
+      try {
+        const response = await apiClient.get("/character");
+        if (response.data.isSuccess) {
+          const formattedCharacters = response.data.data.map((char) => ({
+            id: char.id,
+            name: char.name,
+            description: char.info,
+          }));
+          setCharacters(formattedCharacters);
+        } else {
+          console.error("Failed to fetch characters:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching characters:", error);
+      }
+    };
+
+    fetchCharacters();
+  }, []);
 
   const handleCharClick = (id) => {
-    setSelectedChars((prevSelected) => {
-      if (prevSelected.includes(id)) {
-        // If already selected, remove it (toggle off)
-        return prevSelected.filter((charId) => charId !== id);
-      } else {
-        // If not selected, add it (toggle on)
-        return [...prevSelected, id];
-      }
-    });
+    setSelectedChars((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((charId) => charId !== id)
+        : [...prevSelected, id]
+    );
   };
 
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
+  const handleOpenCharacterListModal = () => {
+    setIsCharacterListModalOpen(true);
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+  const handleCloseCharacterListModal = () => {
+    setIsCharacterListModalOpen(false);
   };
 
   const handleAddCharacter = (newChar) => {
-    setCharacters([...characters, newChar]);
-    setIsModalOpen(false);
+    setCharacters((prevCharacters) => [...prevCharacters, newChar]);
+    // 추가 후 selectedChars는 유지
+    setSelectedChars((prevSelected) => [...prevSelected]);
+    // 모달을 닫고 새로고침하여 자동으로 업데이트 반영
+    handleCloseCharacterListModal();
+    window.location.reload();
   };
 
-  const mainCharId = selectedChars.length > 0 ? selectedChars[0] : null; // Set the first selected character as main
+  // 삭제 함수 정의
+  const handleDeleteCharacter = async (characterId) => {
+    try {
+      // DELETE 요청을 보내서 서버에서 캐릭터 삭제
+      await apiClient.delete(`/character/${characterId}`);
+
+      // 요청 성공 시 상태에서 해당 캐릭터 제거
+      setCharacters((prevCharacters) =>
+        prevCharacters.filter((char) => char.id !== characterId)
+      );
+
+      console.log(`Character with ID ${characterId} deleted successfully`);
+    } catch (error) {
+      console.error("Error deleting character:", error);
+      alert("캐릭터 삭제 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handleEditCharacter = (updatedChar) => {
+    setCharacters((prevCharacters) =>
+      prevCharacters.map((char) =>
+        char.id === updatedChar.id ? updatedChar : char
+      )
+    );
+  };
 
   return (
     <div className="SelectCharWrapper">
@@ -67,25 +90,34 @@ const SelectChar = () => {
         메인 등장인물을 선택해주세요
       </div>
       <div className="CharBoxWrapper">
-        {characters.map((char) => (
+        {characters.map((char, index) => (
           <CharBox
-            key={char.id}
+            key={`${char.id}-${index}`}
             charName={char.name}
             charDescription={char.description}
-            isSelected={selectedChars.includes(char.id)} // Check if the character is selected
-            isMainChar={mainCharId === char.id} // Check if this character is the main character
+            isSelected={selectedChars.includes(char.id)}
+            isMainChar={selectedChars[0] === char.id}
             onClick={() => handleCharClick(char.id)}
           />
         ))}
       </div>
-      <button className="PlusChar" onClick={handleModalOpen}>
+      <button
+        className="OpenCharacterListButton"
+        onClick={handleOpenCharacterListModal}
+      >
         인물 추가·수정하러 가기
       </button>
-      <CharPlusModal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-        onAddCharacter={handleAddCharacter}
-      />
+
+      {/* CharacterListModal 컴포넌트 */}
+      {isCharacterListModalOpen && (
+        <CharacterListModal
+          characters={characters}
+          onClose={handleCloseCharacterListModal}
+          onAddCharacter={handleAddCharacter}
+          onDeleteCharacter={handleDeleteCharacter}
+          onEditCharacter={handleEditCharacter}
+        />
+      )}
     </div>
   );
 };

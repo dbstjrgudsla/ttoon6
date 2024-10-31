@@ -1,0 +1,159 @@
+/* 전체 모달 배경 */
+.modal-overlay22 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  /* 모달 콘텐츠 */
+/* 모달 콘텐츠 */
+.modal-content22 {
+    width: 30vw;
+    height: 55vh;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* 캐릭터 목록 스타일 */
+
+  
+  
+  /* 모달 닫기 버튼 */
+  .modal-close22 {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  /* 제목 스타일 */
+  .modal-content22 h2 {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* 캐릭터 목록 스타일 */
+  .character-list {
+    flex-grow: 1;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 20px; /* 버튼과의 간격 */
+  }
+  
+
+  
+  /* 개별 캐릭터 항목 */
+  .character-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 10px 0;
+    position: relative;
+  }
+  
+  /* 캐릭터 이름과 설명 */
+  .character-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .character-name {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .character-description {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+  }
+  
+  /* 메뉴 버튼 스타일 (점 세 개) */
+  .menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #666;
+  }
+  
+  /* 메뉴 드롭다운 */
+  .menu-dropdown {
+    position: absolute;
+    top: 30px;
+    right: 10px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 1000;
+    margin-top: 10px;
+    width: 150px;
+ 
+  }
+  
+  /* 드롭다운 아이템 스타일 */
+  .menu-item {
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
+    font-weight: 500;
+    
+  }
+  
+  .menu-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .menu-item.delete {
+    color: #ff6666;
+  }
+  
+  .menu-item.edit {
+    color: #2B2D36;
+  }
+  
+
+  .add-character-button {
+    width: 100%;
+    height: 45px;
+    background-color: #ff903f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto;
+  }
+.add-character-button:hover{
+  
+    background-color: #FFEBDC;
+    color:#FF903F;
+}

@@ -8,7 +8,7 @@
     border-radius: 19px;
     
 }
-.PlusChar{
+.OpenCharacterListButton{
     padding: 10px 30px 10px 30px;
     background-color: #FFEBDC;
     color:#FF903F;
@@ -19,7 +19,7 @@
     margin-bottom: 50px;
     margin-top:  20px;
 }
-.PlusChar:hover{
+.OpenCharacterListButton:hover{
     background-color: #FF903F;
     color: white;
 }

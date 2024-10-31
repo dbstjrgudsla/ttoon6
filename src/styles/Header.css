@@ -11,9 +11,17 @@
 }
 .HeaderItem{
     margin-left: 20px;
+    margin-right: 10px;
+    font-size: 20px;
+    font-weight: 500;
+}
+.HeaderItem2{
+    margin-left: 20px;
     margin-right: 20px;
     font-size: 20px;
     font-weight: 500;
+    display: flex;
+    align-items: center;
 }
 .HeaderLoginButton{
 
@@ -61,4 +69,10 @@
 }
 .PlusToon:hover {
     background-color: #d26619; /* 호버 시 배경색 변경 */
+}
+.ProfileImage2{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
 }

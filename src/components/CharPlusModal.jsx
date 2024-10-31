@@ -1,12 +1,12 @@
 import "../styles/CharPlusModal.css";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
+import apiClient from "./apiClient"; // 경로 확인 필요
 
 const CharPlusModal = ({ isOpen, onClose, onAddCharacter }) => {
-  const maxLength = 20; // 최대 입력 가능한 문자 수
+  const maxLength = 100; // 최대 입력 가능한 문자 수
   const [name, setName] = useState(""); // 이름 입력 상태
-
-  const [char, setChar] = useState(""); // 입력된 이야기를 상태로 관리
+  const [char, setChar] = useState(""); // 등장인물 특징 상태
 
   const handleChange = (event) => {
     const text = event.target.value;
@@ -15,14 +15,33 @@ const CharPlusModal = ({ isOpen, onClose, onAddCharacter }) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (name && char) {
-      const newChar = {
-        id: Date.now(), // 고유 ID 생성
-        name,
-        description: char,
-      };
-      onAddCharacter(newChar); // 부모 컴포넌트로 새로운 인물 추가 요청
+      try {
+        const response = await apiClient.post("/character", {
+          name,
+          info: char,
+        });
+
+        if (response.data.isSuccess) {
+          const newChar = {
+            id: response.data.figure,
+            name,
+            description: char,
+          };
+
+          onAddCharacter(newChar); // 한 번만 호출하도록 확인
+          setName("");
+          setChar("");
+          onClose();
+        } else {
+          console.error("Failed to add character:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error adding character:", error);
+      }
+    } else {
+      alert("이름과 특징을 모두 입력해주세요.");
     }
   };
 
@@ -44,9 +63,8 @@ const CharPlusModal = ({ isOpen, onClose, onAddCharacter }) => {
             <div className="a11">이름</div>
             <input
               type="text"
-              placeholder="홍길동"
+              placeholder="예) 홍길동"
               style={{
-                width: "200px",
                 height: "46px",
                 borderRadius: "10px",
                 backgroundColor: "#F7F7FA",
@@ -65,7 +83,16 @@ const CharPlusModal = ({ isOpen, onClose, onAddCharacter }) => {
               className="CharTextArea"
               value={char}
               onChange={handleChange}
-              placeholder="등장인물 특징을 입력해주세요.&#13;예)검정 생머리, 20살 여자, 청바지의 흰 반팔티"
+              placeholder={`등장인물 특징을 입력해주세요.\n예) 검정 생머리, 20살 여자, 청바지의 흰 반팔티`}
+              style={{
+                borderRadius: "10px",
+                backgroundColor: "#F7F7FA",
+                border: "none",
+                fontSize: "16px",
+                outlineColor: "#FF903F",
+                padding: "10px",
+                resize: "none",
+              }}
             ></textarea>
           </div>
           <div className="Submit">
