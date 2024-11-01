@@ -1,7 +1,7 @@
 import { ReactComponent as Apple } from "../img/Apple.svg";
 
 const AppleLogin = () => {
-  const link = `http://localhost:8080/oauth2/authorization/apple`;
+  const link = `https://ttoon.site/oauth2/authorization/apple`;
 
   const loginHandler = () => {
     window.location.href = link;
