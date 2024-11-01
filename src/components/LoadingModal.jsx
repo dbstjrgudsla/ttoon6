@@ -29,7 +29,7 @@ const LoadingModal = ({ onClose }) => {
           &times;
         </button>
         <div className="h1" style={{ fontSize: "28px" }}>
-          회원님이 써주신 기록을 바탕으로 <br />네 컷 만화를 그리는 중이에요
+          사용자님이 써주신 기록을 바탕으로 <br />네 컷 만화를 그리는 중이에요
         </div>
         <div className="h3">조금만 기다려주시면 금방 완성할게요!</div>
         <div className="spinner-container">

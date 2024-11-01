@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({
-  baseURL: "https://ttoon.site/api",
+  baseURL: "http://localhost:8080/api",
 });
 
 // 재발급 요청 상태를 추적하기 위한 변수
@@ -66,7 +66,7 @@ apiClient.interceptors.response.use(
         console.log("재발급 요청을 시작합니다. RefreshToken:", refreshToken);
 
         const response = await axios.post(
-          "https://ttoon.site/api/auth/reissue",
+          "http://localhost:8080/api/auth/reissue",
           null,
           {
             headers: {

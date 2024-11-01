@@ -5,6 +5,7 @@ import TermsPage from './pages/TermsPage';
 import MainPage from './pages/MainPage';
 import HomePage from './pages/HomePage';
 import AddToonPage from './pages/AddToonPage';
+
 const App = () => {
   return (
     <Router>
