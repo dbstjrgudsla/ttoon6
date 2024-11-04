@@ -4,11 +4,11 @@ import { ReactComponent as ChooseHeader1 } from "../img/ChooseHeader1.svg";
 import { ReactComponent as ChooseHeader2 } from "../img/ChooseHeader2.svg";
 import { ReactComponent as ChooseHeader3 } from "../img/ChooseHeader3.svg";
 import { ReactComponent as ChooseHeader4 } from "../img/ChooseHeader4.svg";
-import apiClient from "./apiClient"; // apiClient를 사용하여 요청
+import apiClient from "./apiClient"; // apiClient가 API 요청을 수행함
 
 const ChooseOption = ({ accessToken }) => {
-  const [selectedImages, setSelectedImages] = useState([1, 2, 3, 4]); // 각 컷 선택 저장
-  const [currentCut, setCurrentCut] = useState(0); // 현재 컷 인덱스
+  const [selectedImages, setSelectedImages] = useState([1, 2, 3, 4]); // 각 캡 선택 저장
+  const [currentCut, setCurrentCut] = useState(0); // 현재 캡 인덱스
   const [isComplete, setIsComplete] = useState(false); // 완료 상태
   const [nickName, setNickName] = useState(""); // 사용자 닉네임
   const imageOptions = [1, 2, 3]; // 이미지 옵션
@@ -45,28 +45,31 @@ const ChooseOption = ({ accessToken }) => {
   // 이미지 선택 핸들러
   const handleImageSelect = (image) => {
     const updatedImages = [...selectedImages];
-    updatedImages[currentCut] = image; // 현재 컷에 선택된 이미지 저장
+    updatedImages[currentCut] = image; // 현재 캡에 선택된 이미지 저장
     setSelectedImages(updatedImages);
   };
 
-  // 다음으로 버튼 핸들러
+  // handleNext와 handlePrev에 상태 변화를 확인하는 로그 추가
   const handleNext = () => {
     if (currentCut < 3) {
-      setCurrentCut(currentCut + 1); // 다음 컷으로 이동
+      setCurrentCut(currentCut + 1);
+      console.log("Next cut:", currentCut + 1);
     } else {
-      setIsComplete(true); // 네 번째 컷 이후 완료 상태로 전환
+      setIsComplete(true);
+      console.log("Complete state reached");
     }
   };
 
-  // 이전으로 버튼 핸들러
   const handlePrev = () => {
     if (currentCut > 0) {
-      setCurrentCut(currentCut - 1); // 이전 컷으로 이동
+      setCurrentCut(currentCut - 1);
+      console.log("Previous cut:", currentCut - 1);
     }
   };
 
-  // 현재 컷에 따라 SVG 헤더를 렌더링
+  // 현재 캡에 따라 SVG 헤더를 레널리버리기
   const renderHeader = () => {
+    console.log("Rendered Header for Cut:", currentCut);
     switch (currentCut) {
       case 0:
         return <ChooseHeader1 />;
@@ -81,7 +84,7 @@ const ChooseOption = ({ accessToken }) => {
     }
   };
 
-  // 완료 버튼 클릭 시 최종 선택 화면 렌더링
+  // 완료 버튼 클릭 시 최종 선택 화면 레널리버리기
   const renderCompletionView = () => (
     <div className="completion-view">
       <div className="h1" style={{ marginTop: "20px", marginBottom: "20px" }}>
@@ -99,7 +102,7 @@ const ChooseOption = ({ accessToken }) => {
             <div key={index} className="cut">
               <img
                 src={`path_to_image/image${image}.png`} // 선택한 이미지 경로
-                alt={`컷 ${index + 1}`}
+                alt={`캡 ${index + 1}`}
                 className="selected-image"
               />
             </div>
@@ -117,9 +120,9 @@ const ChooseOption = ({ accessToken }) => {
     <>
       <div className="choose-option-wrapper">
         {isComplete ? (
-          renderCompletionView() // 완료 상태일 때 선택한 컷을 보여주는 화면
+          renderCompletionView() // 완료 상태일 때 선택한 캡을 보여주는 화면
         ) : (
-          <>
+          <div className="ContentsWrapper">
             {renderHeader()}
             <div className="KKK">
               <div className="h1" style={{ marginTop: "40px " }}>
@@ -163,7 +166,7 @@ const ChooseOption = ({ accessToken }) => {
                 {currentCut === 3 ? "완료" : "다음으로"}
               </button>
             </div>
-          </>
+          </div>
         )}
       </div>
     </>

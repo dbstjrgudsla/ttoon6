@@ -158,6 +158,7 @@ const Header = ({ onSelectTab, currentTab }) => {
                 style={{
                   width: "25px",
                   color: "#CDCED6",
+
                   marginLeft: "5px",
                   cursor: "pointer",
                 }}

@@ -21,6 +21,8 @@ const Attendance = () => {
   const [attendanceData, setAttendanceData] = useState([]);
   const [points, setPoints] = useState(0);
   const [isAlreadyChecked, setIsAlreadyChecked] = useState(false); // 출석 체크 여부
+  const [showModal, setShowModal] = useState(false); // 모달 표시 상태
+  const [currentDay, setCurrentDay] = useState(""); // 오늘의 요일
 
   useEffect(() => {
     fetchAttendanceData();
@@ -40,10 +42,21 @@ const Attendance = () => {
       setAttendanceData(attendanceDtoList);
       setPoints(point);
 
-      // 오늘 출석 여부 확인
+      // 오늘 출석 여부 확인 및 한국어 요일 변환
       const today = new Date()
         .toLocaleString("en-US", { weekday: "short" })
-        .toUpperCase(); // 오늘 요일 가져오기
+        .toUpperCase();
+      const dayTranslations = {
+        MON: "월요일",
+        TUE: "화요일",
+        WED: "수요일",
+        THU: "목요일",
+        FRI: "금요일",
+        SAT: "토요일",
+        SUN: "일요일",
+      };
+      setCurrentDay(dayTranslations[today]); // 오늘 요일을 한국어로 설정
+
       const todayData = attendanceDtoList.find((item) =>
         item.dayOfWeek.startsWith(today)
       );
@@ -75,6 +88,7 @@ const Attendance = () => {
 
       if (response.data.isSuccess) {
         fetchAttendanceData(); // 출석 성공 시 데이터를 새로고침
+        setShowModal(true); // 출석 성공 시 모달 표시
       } else {
         alert(response.data.message); // 오류 메시지 알림
         console.error("Error checking attendance:", response.data.message);
@@ -84,6 +98,8 @@ const Attendance = () => {
       console.error("Error posting attendance check:", error);
     }
   };
+
+  const closeModal = () => setShowModal(false);
 
   const daysOfWeek = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
@@ -146,6 +162,32 @@ const Attendance = () => {
       >
         {isAlreadyChecked ? "이미 출석체크 했어요" : "출석 체크하기"}
       </button>
+
+      {/* 출석 완료 모달 */}
+      {showModal && (
+        <div className="attendance-modal-overlay-unique">
+          <div className="attendance-modal-content-unique">
+            <button
+              className="attendance-modal-close-button-unique"
+              onClick={closeModal}
+            >
+              &times;
+            </button>
+            <h2 className="attendance-modal-title-unique">
+              {currentDay} 출석체크 완료!
+            </h2>
+            <p className="attendance-modal-message-unique">
+              보상으로 100포인트를 지급 받았어요.
+            </p>
+            <button
+              onClick={closeModal}
+              className="attendance-modal-confirm-button-unique"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

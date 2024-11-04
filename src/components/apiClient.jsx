@@ -103,6 +103,7 @@ apiClient.interceptors.response.use(
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         alert("로그인 상태가 만료되었습니다. 다시 로그인해주세요.");
+        window.location.href = "/"; // 만료 시 메인 페이지로 리다이렉트
         processQueue(refreshError, null);
         return Promise.reject(refreshError);
       } finally {

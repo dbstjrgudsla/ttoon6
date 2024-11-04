@@ -38,7 +38,7 @@ const Language = () => {
                     }}
                   />
                 }
-                label="영어"
+                label="한국어"
               />
               <FormControlLabel
                 value="korean"
@@ -52,7 +52,7 @@ const Language = () => {
                     }}
                   />
                 }
-                label="한국어"
+                label="영어"
               />
             </RadioGroup>
           </FormControl>

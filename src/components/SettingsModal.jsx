@@ -71,7 +71,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
       case "openSource":
         return <div>오픈소스 라이센스</div>;
       case "makers":
-        return <div>만든 사람들</div>;
+        return <div>지윤석</div>;
       case "inquiry":
         return <InquirySettings />;
       default:
