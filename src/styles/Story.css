@@ -7,9 +7,9 @@ margin: 30px 0px 30px 0px;
 width : 100%;
 border-radius: 19px;
 }
-.TextArea{
+.TextArea1, .TextArea2, .TextArea3, .TextArea4{
     width: 600px;
-    height: 280px;
+    height: 100px;
     background-color:#F7F7FA;
     border: none;
     margin-top: 20px;
@@ -36,6 +36,7 @@ textarea::placeholder {
     outline-color: #FF903F;
     font-size: 16px;
     color :#2B2D36;
+    height: 20px;
 }
 TopicArea::placeholder {
     color: #A9ABBB; /* placeholder 텍스트 색상 변경 */
@@ -44,4 +45,10 @@ TopicArea::placeholder {
 }
 .TextWrapper{
     margin-bottom: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.CharacterCount{
+    display: flex;
 }

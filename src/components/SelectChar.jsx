@@ -1,11 +1,10 @@
-// SelectChar Component
 import React, { useState, useEffect } from "react";
 import apiClient from "./apiClient"; // apiClient 경로 확인
 import CharacterListModal from "./CharacterListModal";
 import CharBox from "./CharBox";
 import "../styles/SelectChar.css";
 
-const SelectChar = () => {
+const SelectChar = ({ setSelectedChar, setOthers }) => {
   const [characters, setCharacters] = useState([]);
   const [selectedChars, setSelectedChars] = useState([]);
   const [isCharacterListModalOpen, setIsCharacterListModalOpen] =
@@ -33,12 +32,27 @@ const SelectChar = () => {
     fetchCharacters();
   }, []);
 
+  // 캐릭터 클릭 핸들러
   const handleCharClick = (id) => {
-    setSelectedChars((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((charId) => charId !== id)
-        : [...prevSelected, id]
-    );
+    setSelectedChars((prevSelected) => {
+      let updatedSelected;
+      if (prevSelected.includes(id)) {
+        updatedSelected = prevSelected.filter((charId) => charId !== id);
+      } else {
+        updatedSelected = [...prevSelected, id];
+      }
+
+      // 메인 캐릭터와 다른 캐릭터들을 설정
+      if (updatedSelected.length > 0) {
+        setSelectedChar(updatedSelected[0]); // 첫 번째 캐릭터를 메인 캐릭터로 설정
+        setOthers(updatedSelected.slice(1)); // 나머지 캐릭터들을 others로 설정
+      } else {
+        setSelectedChar(null);
+        setOthers([]);
+      }
+
+      return updatedSelected;
+    });
   };
 
   const handleOpenCharacterListModal = () => {
@@ -51,24 +65,15 @@ const SelectChar = () => {
 
   const handleAddCharacter = (newChar) => {
     setCharacters((prevCharacters) => [...prevCharacters, newChar]);
-    // 추가 후 selectedChars는 유지
-    setSelectedChars((prevSelected) => [...prevSelected]);
-    // 모달을 닫고 새로고침하여 자동으로 업데이트 반영
     handleCloseCharacterListModal();
-    window.location.reload();
   };
 
-  // 삭제 함수 정의
   const handleDeleteCharacter = async (characterId) => {
     try {
-      // DELETE 요청을 보내서 서버에서 캐릭터 삭제
       await apiClient.delete(`/character/${characterId}`);
-
-      // 요청 성공 시 상태에서 해당 캐릭터 제거
       setCharacters((prevCharacters) =>
         prevCharacters.filter((char) => char.id !== characterId)
       );
-
       console.log(`Character with ID ${characterId} deleted successfully`);
     } catch (error) {
       console.error("Error deleting character:", error);
@@ -108,7 +113,6 @@ const SelectChar = () => {
         인물 추가·수정하러 가기
       </button>
 
-      {/* CharacterListModal 컴포넌트 */}
       {isCharacterListModalOpen && (
         <CharacterListModal
           characters={characters}

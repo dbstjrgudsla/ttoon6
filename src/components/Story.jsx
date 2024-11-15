@@ -1,32 +1,42 @@
 import { useState } from "react";
 import "../styles/Story.css";
 
-const Story = () => {
-  const maxLength = 200; // 내용의 최대 입력 가능한 문자 수
+const Story = ({ setTopic, setStoryContents }) => {
+  const maxLength = 150; // 내용의 최대 입력 가능한 문자 수
   const maxTopicLength = 20; // 제목의 최대 입력 가능한 문자 수
-  const [story, setStory] = useState(""); // 입력된 이야기를 상태로 관리
-  const [topic, setTopic] = useState(""); // 입력된 제목을 상태로 관리
-  const [storyWarning, setStoryWarning] = useState(false); // 내용 경고 상태
+
+  const [topic, updateTopic] = useState(""); // 제목 상태
   const [topicWarning, setTopicWarning] = useState(false); // 제목 경고 상태
 
-  const handleStoryChange = (event) => {
-    const text = event.target.value;
-    if (text.length > maxLength) {
-      setStoryWarning(true); // 글자 수 초과 시 경고 표시
-    } else {
-      setStoryWarning(false); // 글자 수 이내 시 경고 해제
-    }
-    setStory(text); // 상태 업데이트
-  };
+  // 각 textarea의 내용을 따로 관리하는 상태
+  const [story1, setStory1] = useState("");
+  const [story2, setStory2] = useState("");
+  const [story3, setStory3] = useState("");
+  const [story4, setStory4] = useState("");
 
+  const [storyWarning1, setStoryWarning1] = useState(false);
+  const [storyWarning2, setStoryWarning2] = useState(false);
+  const [storyWarning3, setStoryWarning3] = useState(false);
+  const [storyWarning4, setStoryWarning4] = useState(false);
+
+  // 제목 변경 핸들러
   const handleTopicChange = (event) => {
     const text = event.target.value;
-    if (text.length > maxTopicLength) {
-      setTopicWarning(true); // 글자 수 초과 시 경고 표시
-    } else {
-      setTopicWarning(false); // 글자 수 이내 시 경고 해제
-    }
-    setTopic(text); // 상태 업데이트
+    setTopicWarning(text.length > maxTopicLength);
+    updateTopic(text);
+    setTopic(text); // 부모 컴포넌트에 제목 전달
+  };
+
+  // 이야기 변경 핸들러
+  const handleStoryChange = (setStory, setWarning, index, event) => {
+    const text = event.target.value;
+    setWarning(text.length > maxLength);
+    setStory(text);
+
+    // 부모 컴포넌트에 전체 이야기 내용을 배열로 전달
+    const updatedContents = [story1, story2, story3, story4];
+    updatedContents[index] = text;
+    setStoryContents(updatedContents);
   };
 
   return (
@@ -44,7 +54,7 @@ const Story = () => {
           onChange={handleTopicChange}
           placeholder="제목을 입력해주세요"
           maxLength={maxTopicLength}
-          rows={2} // 제목 영역의 초기 행 수
+          rows={2}
         />
         <div
           className="CharacterCount"
@@ -54,20 +64,80 @@ const Story = () => {
         </div>
       </div>
       <div className="TextWrapper">
-        <textarea
-          className="TextArea"
-          value={story}
-          onChange={handleStoryChange}
-          rows={5} // 내용 영역의 초기 행 수
-          cols={50} // 내용 영역의 초기 열 수
-          placeholder="오늘 하루에 대해 자세히 들려주세요."
-          maxLength={maxLength} // 최대 길이 설정
-        />
-        <div
-          className="CharacterCount"
-          style={{ color: storyWarning ? "red" : "#A9ABBB" }}
-        >
-          {story.length}/{maxLength}자
+        <div className="TextAreaContainer">
+          <textarea
+            className="TextArea1"
+            value={story1}
+            onChange={(e) =>
+              handleStoryChange(setStory1, setStoryWarning1, 0, e)
+            }
+            rows={5}
+            placeholder="오늘 하루 중, 만화의 첫번째 장면에 들어갈 내용을 들려주세요."
+            maxLength={maxLength}
+          />
+          <div
+            className="CharacterCount"
+            style={{ color: storyWarning1 ? "red" : "#A9ABBB" }}
+          >
+            {story1.length}/{maxLength}자
+          </div>
+        </div>
+
+        <div className="TextAreaContainer">
+          <textarea
+            className="TextArea2"
+            value={story2}
+            onChange={(e) =>
+              handleStoryChange(setStory2, setStoryWarning2, 1, e)
+            }
+            rows={5}
+            placeholder="오늘 하루 중, 만화의 두번째 장면에 들어갈 내용을 들려주세요."
+            maxLength={maxLength}
+          />
+          <div
+            className="CharacterCount"
+            style={{ color: storyWarning2 ? "red" : "#A9ABBB" }}
+          >
+            {story2.length}/{maxLength}자
+          </div>
+        </div>
+
+        <div className="TextAreaContainer">
+          <textarea
+            className="TextArea3"
+            value={story3}
+            onChange={(e) =>
+              handleStoryChange(setStory3, setStoryWarning3, 2, e)
+            }
+            rows={5}
+            placeholder="오늘 하루 중, 만화의 세번째 장면에 들어갈 내용을 들려주세요."
+            maxLength={maxLength}
+          />
+          <div
+            className="CharacterCount"
+            style={{ color: storyWarning3 ? "red" : "#A9ABBB" }}
+          >
+            {story3.length}/{maxLength}자
+          </div>
+        </div>
+
+        <div className="TextAreaContainer">
+          <textarea
+            className="TextArea4"
+            value={story4}
+            onChange={(e) =>
+              handleStoryChange(setStory4, setStoryWarning4, 3, e)
+            }
+            rows={5}
+            placeholder="오늘 하루 중, 만화의 네번째 장면에 들어갈 내용을 들려주세요."
+            maxLength={maxLength}
+          />
+          <div
+            className="CharacterCount"
+            style={{ color: storyWarning4 ? "red" : "#A9ABBB" }}
+          >
+            {story4.length}/{maxLength}자
+          </div>
         </div>
       </div>
     </div>
