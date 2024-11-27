@@ -88,7 +88,7 @@ const ChooseOption = ({ imageUrls, feedId, storyContent }) => {
       console.log("전송할 요청 본문:", requestBody);
 
       // API 요청
-      const response = await apiClient.post(`/toon/${feedId}`, requestBody, {
+      const response = await apiClient.post(`/toon/complete/${feedId}`, requestBody, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
