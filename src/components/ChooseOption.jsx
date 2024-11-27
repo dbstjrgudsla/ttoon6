@@ -23,6 +23,8 @@ const ChooseOption = ({ imageUrls, feedId, storyContent }) => {
     const fetchProfile = async () => {
       try {
         const accessToken = localStorage.getItem("accessToken");
+        console.log("Access Token:", accessToken); // 액세스 토큰 로그
+
         const response = await apiClient.get("/profile", {
           headers: {
             "Content-Type": "application/json",
@@ -32,6 +34,7 @@ const ChooseOption = ({ imageUrls, feedId, storyContent }) => {
 
         if (response.data.isSuccess) {
           setNickName(response.data.data.nickName);
+          console.log("닉네임 가져오기 성공:", response.data.data.nickName); // 닉네임 로그
         } else {
           console.error("프로필 정보 가져오기 실패:", response.data.message);
         }
@@ -48,14 +51,17 @@ const ChooseOption = ({ imageUrls, feedId, storyContent }) => {
     const updatedImages = [...selectedImages];
     updatedImages[currentCut] = imageUrl;
     setSelectedImages(updatedImages);
+    console.log("선택된 이미지 배열:", updatedImages); // 선택된 이미지 배열 로그
   };
 
   // 다음 컷으로 이동
   const handleNext = () => {
     if (currentCut < 3) {
       setCurrentCut(currentCut + 1);
+      console.log("다음 컷으로 이동:", currentCut + 1); // 다음 컷 로그
     } else {
       setIsComplete(true);
+      console.log("완료 상태로 전환"); // 완료 상태 로그
     }
   };
 
@@ -63,24 +69,22 @@ const ChooseOption = ({ imageUrls, feedId, storyContent }) => {
   const handlePrev = () => {
     if (currentCut > 0) {
       setCurrentCut(currentCut - 1);
+      console.log("이전 컷으로 이동:", currentCut - 1); // 이전 컷 로그
     }
   };
 
   // 저장 버튼 클릭 핸들러
-  // 저장 버튼 클릭 핸들러
   const handleSave = async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
-
-      // imageUrls 값을 출력하여 확인
-      console.log("전송할 feedId:", feedId);
-      console.log("전송할 imageUrls:", selectedImages);
+      console.log("전송할 Feed ID:", feedId); // Feed ID 로그
+      console.log("전송할 이미지 URL 배열:", selectedImages); // 이미지 URL 배열 로그
 
       const requestBody = {
         imageUrls: selectedImages, // 이미지 URL 배열
       };
 
-      // 전송할 요청 본문을 출력하여 확인
+      // 요청 본문 로그
       console.log("전송할 요청 본문:", requestBody);
 
       // API 요청
@@ -92,12 +96,14 @@ const ChooseOption = ({ imageUrls, feedId, storyContent }) => {
       });
 
       if (response.data.isSuccess) {
+        console.log("저장 성공:", response.data); // 저장 성공 로그
         alert("저장되었습니다!");
       } else {
+        console.error("저장 실패:", response.data.message); // 저장 실패 로그
         alert("저장에 실패했습니다.");
       }
     } catch (error) {
-      console.error("API 요청 중 오류 발생:", error);
+      console.error("API 요청 중 오류 발생:", error); // API 요청 오류 로그
       alert("저장 중 오류가 발생했습니다.");
     }
   };
@@ -150,7 +156,17 @@ const ChooseOption = ({ imageUrls, feedId, storyContent }) => {
               </div>
             ))}
           </div>
-          <div className="story-content">{storyContent}</div>
+          <div
+            className="story-content"
+            style={{
+              color: "#84889A",
+              fontSize: "16px",
+              fontWeight: "400",
+              marginTop: "20px",
+            }}
+          >
+            {storyContent}{" "}
+          </div>
         </div>
       </div>
       <div className="buttons">

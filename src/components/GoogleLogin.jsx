@@ -1,7 +1,7 @@
 import { ReactComponent as GoogleLogo } from "../img/Google.svg";
 
 const GoogleLogin = () => {
-  const link = `http://localhost:8080/oauth2/authorization/google`;
+  const link = `https://ttoon.site/oauth2/authorization/google`;
 
   const loginHandler = () => {
     window.location.href = link;
